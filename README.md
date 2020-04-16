@@ -1,4 +1,5 @@
-# Frontend for WebAuthn debugging tool
+# DebAuthn Frontend
+__WebAuthn Authenticator Debugging Tool__
 
 ## Project setup
 ```
