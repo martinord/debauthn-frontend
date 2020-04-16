@@ -18,7 +18,7 @@ export default {
     methods: {
         start: () => {
             // request options for sending to authenticator
-            let url = "https://localhost:5000/attestation/options"
+            let url = "/attestation/options"
             axios.post(url, JSON.stringify({  }))
             .then((res) => {
                 var options = PublicKeyCredentialCreationOptions.decode(res.data);
@@ -29,7 +29,7 @@ export default {
                 navigator.credentials.create({ publicKey: options })
                 .then((response) => {
                     // send authenticator response and wait for verification
-                    let url = "https://localhost:5000/attestation/result"
+                    let url = "/attestation/result"
                     var data = AuthenticatorAttestationResponse.encode(response)
                     axios.post(url, data)
                     .then((res) => {
