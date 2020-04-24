@@ -3,18 +3,19 @@
     <h1>Operations</h1>
     <img id="logo" class="p-2" src="./assets/login.png"/>
     <Attestation/>
+    <Assertion/>
   </div>
 </template>
 
 <script>
 import Attestation from './components/Attestation.vue'
-// import Assertion from './components/Assertion.vue'
+import Assertion from './components/Assertion.vue'
 
 export default {
   name: 'App',
   components: {
     Attestation,
-    // Assertion,
+    Assertion,
   }
 }
 </script>
