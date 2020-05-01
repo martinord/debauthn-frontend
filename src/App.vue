@@ -1,39 +1,72 @@
 <template>
-  <div id="app">
-    <h1>Operations</h1>
-    <img id="logo" class="p-2" src="./assets/login.png"/>
-    <Attestation/>
-    <Assertion/>
-  </div>
+
+  <v-app>
+    <v-container justify-center>
+      <v-row>
+        <v-col xs="5" md="5">
+          <v-row justify-start>
+            <v-col cols="5">
+              <h1>DebAuthn</h1>
+            </v-col>
+            <v-col cols="2">
+              <v-img src="./assets/debauthn.png"
+                     max-height="50px" contain>
+              </v-img>
+            </v-col>
+          </v-row>
+          <h5>WebAuthn Authenticator Debugging Tool</h5>
+          <br>
+          <v-row justify-center>
+            <v-tabs>
+              <v-tabs-slider></v-tabs-slider>
+              <v-tab to="/attestation">Attestation</v-tab>
+              <v-tab to="/assertion">Assertion</v-tab>
+            </v-tabs>
+          </v-row>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col md="10" xs="5">
+          <router-view></router-view>
+        </v-col>
+      </v-row>
+      
+    </v-container>
+
+    <div class="footer">
+      <hr>
+      <v-footer align="center">
+        <v-spacer></v-spacer>
+        <i> DebAuthn - WebAuthn Authenticator Debugging Tool</i>
+      </v-footer>
+    </div>
+
+  </v-app>
+
 </template>
 
 <script>
-import Attestation from './components/Attestation.vue'
-import Assertion from './components/Assertion.vue'
 
 export default {
   name: 'App',
-  components: {
-    Attestation,
-    Assertion,
+  components:{
   }
-}
+};
+
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin: 5vw 10vw 5vw 10vw;
-}
-.body {
-  
-}
-#logo {
-  width: 150px;
-  padding: 1% 1% 1% 1%;
-}
+<style lang="css">
+  .footer{
+    width: 100%;
+    bottom:0;
+    position:absolute;
+  }
+
+  /* Inset, by Dan Eden */
+  hr {
+      border: 0;
+      height: 0;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
 </style>

@@ -1,9 +1,40 @@
 <template>
-    <div>
+    <v-content>
+        <v-banner>Attestation operation registers an authenticator in the system</v-banner>
         <!--TODO: include input for user-->
-        <button type="button" class="btn btn-default" id="attestation" 
-            @click="start">Attestation</button>
-    </div>
+        <br>
+        <v-content>
+            <v-btn rounded type="button" class="btn btn-default" id="attestation" 
+            @click="start">Attestation</v-btn>
+        </v-content>
+
+        <!-- dinamic success dialog -->
+
+        <v-dialog
+            v-model="showSuccess"
+            max-width="700"
+        >
+            <v-card>
+                <v-card-title class="headline">Successful</v-card-title>
+
+                <v-card-text>
+                You have successfully registered the credential through Attestation operation.
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                        color="green darken-1"
+                        text
+                        @click="showSuccess = false"
+                    >
+                        Close
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </v-content>
 </template>
 
 <script>
@@ -15,8 +46,11 @@ import { PublicKeyCredentialCreationOptions, AuthenticatorAttestationResponse }
 
 export default {
     name: "Attestation",
+    data: () => ({
+      showSuccess: false
+    }),
     methods: {
-        start: () => {
+        start() {
             // request options for sending to authenticator
             let url = "/attestation/options"
             axios.post(url, JSON.stringify({  }))
@@ -34,9 +68,7 @@ export default {
                     axios.post(url, data)
                     .then((res) => {
                         if(res.data.audit.complete)
-                            alert('Attestation successful')
-                        else
-                            alert('Attestation failed')
+                            this.showSuccess = true
                     })            
                 })
             })

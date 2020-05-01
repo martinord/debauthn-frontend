@@ -1,9 +1,40 @@
 <template>
-    <div>
+    <v-content>
+        <v-banner>Assertion operation uses an authenticator to log into the system</v-banner>
         <!--TODO: include input for user-->
-        <button type="button" class="btn btn-default" id="attestation" 
-            @click="start">Assertion</button>
-    </div>
+        <br>
+        <v-content>
+            <v-btn rounded type="button" class="btn btn-default" id="attestation" 
+                @click="start">Assertion</v-btn>
+        </v-content>
+
+        <!-- dinamic success dialog -->
+
+        <v-dialog
+            v-model="showSuccess"
+            max-width="700"
+        >
+            <v-card>
+                <v-card-title class="headline">Successful</v-card-title>
+
+                <v-card-text>
+                You have successfully authenticated the credential through Assertion operation.
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn
+                        color="green darken-1"
+                        text
+                        @click="showSuccess = false"
+                    >
+                        Close
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </v-content>
 </template>
 
 <script>
@@ -14,8 +45,11 @@ import { PublicKeyCredentialRequestOptions, AuthenticatorAssertionResponse }
 
 export default {
     name: "Assertion",
+    data: () => ({
+      showSuccess: false
+    }),
     methods: {
-        start: () => {
+        start() {
             // request options for sending to authenticator
             let url = "/assertion/options"
             axios.post(url, JSON.stringify({  }))
@@ -31,9 +65,7 @@ export default {
                     axios.post(url, data)
                     .then((res) => {
                         if(res.data.audit.complete)
-                            alert('Assertion successful')
-                        else
-                            alert('Assertion failed')
+                            this.showSuccess = true
                     })            
                 })
             })
