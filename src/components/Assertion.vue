@@ -46,10 +46,13 @@ import { PublicKeyCredentialRequestOptions, AuthenticatorAssertionResponse }
 export default {
     name: "Assertion",
     data: () => ({
-      showSuccess: false
+      showSuccess: false,
+      showError: false
     }),
     methods: {
         start() {
+            this.showSuccess = false;
+            this.showError = false;
             // request options for sending to authenticator
             let url = "/assertion/options"
             axios.post(url, JSON.stringify({  }))
@@ -66,9 +69,18 @@ export default {
                     .then((res) => {
                         if(res.data.audit.complete)
                             this.showSuccess = true
+                    })
+                    .catch((error) => {
+                        this.onError(error)
                     })            
                 })
             })
+        },
+        onError(error) {
+            this.showError = true;
+            console.log("Catched error!")
+            if(error.response.data) console.log(error.response.data)
+            else console.log(error)
         }
     },
 }
