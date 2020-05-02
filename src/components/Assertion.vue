@@ -4,9 +4,24 @@
         <!--TODO: include input for user-->
         <br>
         <v-content>
-            <v-btn rounded type="button" class="btn btn-default" id="attestation" 
-                @click="start">Assertion</v-btn>
+            <v-btn rounded @click="start">Assertion</v-btn>
         </v-content>
+
+        <br>
+
+        <!-- dinamic alert on error -->
+
+        <v-alert
+            border="right"
+            colored-border
+            elevation="2" 
+            dismissible 
+            transition="scale-transition" 
+            type="error" 
+            v-model="showError"
+        >
+            {{ error }}
+        </v-alert>
 
         <!-- dinamic success dialog -->
 
@@ -47,7 +62,8 @@ export default {
     name: "Assertion",
     data: () => ({
       showSuccess: false,
-      showError: false
+      showError: false,
+      error: "An error occurred"
     }),
     methods: {
         start() {
@@ -77,10 +93,10 @@ export default {
             })
         },
         onError(error) {
-            this.showError = true;
             console.log("Catched error!")
-            if(error.response.data) console.log(error.response.data)
-            else console.log(error)
+            if(error.response.data) this.error = error.response.data
+            else this.error = error
+            this.showError = true;
         }
     },
 }
