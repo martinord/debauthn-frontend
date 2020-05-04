@@ -3,16 +3,10 @@
         
         <v-banner>Attestation operation registers an authenticator in the system</v-banner>
         <!--TODO: include input for user-->
-        <br>
-        <v-content>
-            <v-btn rounded @click="start">Attestation</v-btn>
-        </v-content>
-
-        <br>
 
         <!-- dinamic alert on error -->
 
-        <v-alert
+        <v-alert class="mt-2 mb-2"
             border="right"
             colored-border
             elevation="2" 
@@ -23,6 +17,88 @@
         >
             {{ error }}
         </v-alert>
+
+        <v-stepper class="mt-12" v-model="current_step" vertical>
+
+            <v-stepper-step editable :complete="current_step > 1" step="1">
+                Request Assertion options
+                <small>Send a request to obtain Attestation options</small>
+            </v-stepper-step>
+            <v-stepper-content step="1">
+                <v-card
+                    class="mb-12"
+                    color="grey lighten-1"
+                    height="200px"
+                ></v-card>
+
+                <v-btn
+                    color="primary"
+                    @click="request()"
+                >
+                Request
+                </v-btn>
+
+                <v-btn 
+                    text
+                    @click="current_step = 2"
+                >
+                Next
+                </v-btn>
+            </v-stepper-content>
+
+            <v-stepper-step :complete="current_step > 2" step="2">
+                Call the authenticator
+                <small>Request authenticator through WebAuthn API</small>
+            </v-stepper-step>
+            <v-stepper-content step="2">
+                <v-card
+                    class="mb-12"
+                    color="grey lighten-1"
+                    height="200px"
+                ></v-card>
+
+                
+                <v-btn
+                    color="primary"
+                    @click="authenticator()"
+                >
+                Call
+                </v-btn>
+
+                <v-btn 
+                    text
+                    @click="current_step = 3"
+                >
+                Next
+                </v-btn>
+            </v-stepper-content>
+
+            <v-stepper-step step="3">
+                Post the response and validate
+                <small>Send result and request its validation</small>
+            </v-stepper-step>
+            <v-stepper-content step="3">
+                <v-card
+                    class="mb-12"
+                    color="grey lighten-1"
+                    height="200px"
+                ></v-card>
+
+                <v-btn
+                    color="primary"
+                    @click="post()"
+                >
+                Post
+                </v-btn>
+
+                <v-btn 
+                    text
+                    @click="current_step = 3"
+                >
+                Next
+                </v-btn>
+            </v-stepper-content>
+        </v-stepper>
         
         <!-- dinamic success dialog -->
 
@@ -65,36 +141,61 @@ export default {
     data: () => ({
       showSuccess: false,
       showError: false,
-      error: "An error occurred"
+      error: "An error occurred",
+      current_step: 1,
+      options:{},
+      response: {},
+      validation: {}
     }),
     methods: {
-        start() {
+        removeDialogs() {
             this.showSuccess = false;
             this.showError = false;
+        },
+        request() {
+            this.removeDialogs();
             // request options for sending to authenticator
             let url = "/attestation/options"
             axios.post(url, JSON.stringify({  }))
             .then((res) => {
-                var options = PublicKeyCredentialCreationOptions.decode(res.data);
+                this.options = PublicKeyCredentialCreationOptions.decode(res.data);
                 // TODO: change with HTML input
-                options.user.name = "john.p.smith@example.com";
-                options.user.displayName =  "John P. Smith";
-                // call to authenticator with options
-                navigator.credentials.create({ publicKey: options })
-                .then((response) => {
-                    // send authenticator response and wait for verification
-                    let url = "/attestation/result"
-                    var data = AuthenticatorAttestationResponse.encode(response)
-                    axios.post(url, data)
-                    .then((res) => {
-                        if(res.data.audit.complete)
-                            this.showSuccess = true
-                    })
-                    .catch((error) => {
-                        this.onError(error)
-                    })           
-                })
+                this.options.user.name = "john.p.smith@example.com";
+                this.options.user.displayName =  "John P. Smith";
             })
+            .catch((error) => {
+                this.onError(error)
+            })
+        },
+        authenticator() {
+            this.removeDialogs();
+            navigator.credentials.create({ publicKey: this.options })
+            .then((response) => {
+                this.response = response
+            })
+            .catch((error) => {
+                this.onError(error)
+            })
+        },
+        post() {
+            this.removeDialogs();
+            // send authenticator response and wait for verification
+            let url = "/attestation/result"
+            var data = AuthenticatorAttestationResponse.encode(this.response)
+            axios.post(url, data)
+            .then((res) => {
+                this.validation = res.data
+                if(res.data.audit.complete)
+                    this.showSuccess = true
+            })
+            .catch((error) => {
+                this.onError(error)
+            })           
+        },
+        all() {
+            this.request();
+            this.authenticator();
+            this.post();
         },
         onError(error) {
             console.log("Catched error!")
