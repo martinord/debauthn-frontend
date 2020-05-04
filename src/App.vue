@@ -1,31 +1,35 @@
 <template>
 
   <v-app>
-    <v-container justify-center>
-      <v-row>
-        <v-col xs="5" md="5">
-          <v-row justify-start>
-            <v-col cols="5">
-              <h1>DebAuthn</h1>
-            </v-col>
-            <v-col cols="2">
-              <v-img src="./assets/debauthn.png"
-                     max-height="50px" contain>
-              </v-img>
-            </v-col>
+    <v-container>
+
+      <!-- header -->
+
+      <v-row class="mb-3 mt-3 pa-3 primary lighten-3 elevation-5">
+        <v-col>
+          <v-row>
+            <div class="display-3">DebAuthn</div>
+            <img src="./assets/debauthn.png" class="logo">
           </v-row>
-          <h5>WebAuthn Authenticator Debugging Tool</h5>
-          <br>
-          <v-row justify-center>
-            <v-tabs>
-              <v-tabs-slider></v-tabs-slider>
-              <v-tab to="/attestation">Attestation</v-tab>
-              <v-tab to="/assertion">Assertion</v-tab>
-            </v-tabs>
+          <v-row class="pa-3 subtitle-1 font-thin">
+            WebAuthn Authenticator Debugging Tool
           </v-row>
         </v-col>
       </v-row>
+
+      <!-- tabs routing -->
+
       <v-row>
+        <v-tabs class="ml-2">
+          <v-tabs-slider></v-tabs-slider>
+          <v-tab to="/attestation">Attestation</v-tab>
+          <v-tab to="/assertion">Assertion</v-tab>
+        </v-tabs>
+      </v-row>
+
+      <!-- dynamic router view -->
+
+      <v-row class="mb-2 mt-2">
         <v-col md="10" xs="5">
           <router-view></router-view>
         </v-col>
@@ -33,11 +37,13 @@
       
     </v-container>
 
+    <!-- footer -->
+
     <div class="footer">
       <hr>
-      <v-footer align="center">
+      <v-footer>
         <v-spacer></v-spacer>
-        <i> DebAuthn - WebAuthn Authenticator Debugging Tool</i>
+        <div class="font-thin overline"> DebAuthn - WebAuthn Authenticator Debugging Tool</div>
       </v-footer>
     </div>
 
@@ -68,5 +74,11 @@ export default {
       height: 0;
       border-top: 1px solid rgba(0, 0, 0, 0.1);
       border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .logo {
+    height: 60px;
+    width: 85px;
+    padding-left: 30px;
   }
 </style>
