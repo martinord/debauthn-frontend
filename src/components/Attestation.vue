@@ -21,7 +21,7 @@
         <v-stepper class="mt-12" v-model="current_step" vertical>
 
             <v-stepper-step editable :complete="current_step > 1" step="1">
-                Request Assertion options
+                Request Attestation options
                 <small>Send a request to obtain Attestation options</small>
             </v-stepper-step>
             <v-stepper-content step="1">
