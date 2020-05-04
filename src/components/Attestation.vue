@@ -28,8 +28,9 @@
                 <v-card
                     class="mb-12"
                     color="grey lighten-1"
-                    height="200px"
-                ></v-card>
+                >
+                    {{ options }}
+                </v-card>
 
                 <v-btn
                     color="primary"
@@ -53,11 +54,11 @@
             <v-stepper-content step="2">
                 <v-card
                     class="mb-12"
-                    color="grey lighten-1"
-                    height="200px"
-                ></v-card>
+                    color="grey lighten-1"                    
+                >
+                    {{ response }}
+                </v-card>
 
-                
                 <v-btn
                     color="primary"
                     @click="authenticator()"
@@ -81,8 +82,9 @@
                 <v-card
                     class="mb-12"
                     color="grey lighten-1"
-                    height="200px"
-                ></v-card>
+                >
+                    {{ validation }}
+                </v-card>
 
                 <v-btn
                     color="primary"
@@ -93,9 +95,9 @@
 
                 <v-btn 
                     text
-                    @click="current_step = 3"
+                    @click="clear()"
                 >
-                Next
+                Finish
                 </v-btn>
             </v-stepper-content>
         </v-stepper>
@@ -151,6 +153,12 @@ export default {
         removeDialogs() {
             this.showSuccess = false;
             this.showError = false;
+        },
+        clear() {
+            this.options = {},
+            this.response = {},
+            this.validation = {}
+            this.current_step = 1
         },
         request() {
             this.removeDialogs();
