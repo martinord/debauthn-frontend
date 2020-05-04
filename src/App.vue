@@ -30,7 +30,7 @@
       <!-- dynamic router view -->
 
       <v-row class="mb-2 mt-2">
-        <v-col md="10" xs="5">
+        <v-col>
           <router-view></router-view>
         </v-col>
       </v-row>
