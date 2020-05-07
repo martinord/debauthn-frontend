@@ -34,16 +34,16 @@
 
                 <v-btn
                     color="primary"
-                    @click="request()"
+                    @click="authenticator()"
                 >
-                Request
+                Continue
                 </v-btn>
 
                 <v-btn 
                     text
-                    @click="current_step = 2"
+                    @click="request()"
                 >
-                Next
+                Reload
                 </v-btn>
             </v-stepper-content>
 
@@ -61,16 +61,16 @@
 
                 <v-btn
                     color="primary"
-                    @click="authenticator()"
+                    @click="post()"
                 >
-                Call
+                Continue
                 </v-btn>
 
                 <v-btn 
                     text
-                    @click="current_step = 3"
+                    @click="authenticator()"
                 >
-                Next
+                Reload
                 </v-btn>
             </v-stepper-content>
 
@@ -88,14 +88,7 @@
 
                 <v-btn
                     color="primary"
-                    @click="post()"
-                >
-                Post
-                </v-btn>
-
-                <v-btn 
-                    text
-                    @click="clear()"
+                    @click="start()"
                 >
                 Finish
                 </v-btn>
@@ -154,14 +147,16 @@ export default {
             this.showSuccess = false;
             this.showError = false;
         },
-        clear() {
+        start() {
             this.options = {},
             this.response = {},
             this.validation = {}
-            this.current_step = 1
+            this.request()
         },
         request() {
             this.removeDialogs();
+            this.current_step = 1;
+
             // request options for sending to authenticator
             let url = "/attestation/options"
             axios.post(url, JSON.stringify({  }))
@@ -177,6 +172,9 @@ export default {
         },
         authenticator() {
             this.removeDialogs();
+            this.current_step = 2;
+            this.response = {}
+
             navigator.credentials.create({ publicKey: this.options })
             .then((response) => {
                 this.response = response
@@ -187,6 +185,9 @@ export default {
         },
         post() {
             this.removeDialogs();
+            this.current_step = 3;
+            this.validation = {}
+
             // send authenticator response and wait for verification
             let url = "/attestation/result"
             var data = AuthenticatorAttestationResponse.encode(this.response)
@@ -211,6 +212,10 @@ export default {
             else this.error = error
             this.showError = true
         }
+    },
+    mounted() {
+        // launch on mounted element
+        this.start()
     },
 }
 </script>
