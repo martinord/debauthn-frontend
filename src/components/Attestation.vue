@@ -2,7 +2,6 @@
     <v-content>
         
         <v-banner>Attestation operation registers an authenticator in the system</v-banner>
-        <!--TODO: include input for user-->
 
         <!-- dinamic alert on error -->
 
@@ -25,12 +24,11 @@
                 <small>Send a request to obtain Attestation options</small>
             </v-stepper-step>
             <v-stepper-content step="1">
-                <v-card
-                    class="mb-12"
-                    color="grey lighten-1"
-                >
-                    {{ options }}
-                </v-card>
+
+                <attestation-options class="mb-5"
+                    :options="options"
+                    @updated="options=$event"
+                ></attestation-options>
 
                 <v-btn
                     color="primary"
@@ -129,10 +127,13 @@ import axios from 'axios';
 axios.defaults.headers.common['Content-Type'] = "application/json;charset=UTF-8";
 import { PublicKeyCredentialCreationOptions, AuthenticatorAttestationResponse } 
     from '../models/attestation.model'
-
+import AttestationOptions from './forms/AttestationOptions'
 
 export default {
     name: "Attestation",
+    components: {
+        'attestation-options': AttestationOptions
+    },
     data: () => ({
       showSuccess: false,
       showError: false,

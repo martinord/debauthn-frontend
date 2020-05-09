@@ -24,12 +24,11 @@
                 <small>Send a request to obtain Assertion options</small>
             </v-stepper-step>
             <v-stepper-content step="1">
-                <v-card
-                    class="mb-12"
-                    color="grey lighten-1"
-                >
-                    {{ options }}
-                </v-card>
+                
+                <assertion-options class="mb-5" 
+                    :options="options"
+                    @updated="options=$event"
+                ></assertion-options>
 
                 <v-btn
                     color="primary"
@@ -128,9 +127,13 @@ import axios from 'axios';
 axios.defaults.headers.common['Content-Type'] = "application/json;charset=UTF-8";
 import { PublicKeyCredentialRequestOptions, AuthenticatorAssertionResponse } 
     from '../models/assertion.model'
+import AssertionOptions from './forms/AssertionOptions'
 
 export default {
     name: "Assertion",
+    components: {
+        'assertion-options': AssertionOptions
+    },
     data: () => ({
       showSuccess: false,
       showError: false,
