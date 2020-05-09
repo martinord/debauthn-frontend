@@ -1,32 +1,68 @@
 const buff = require('./helpers').buff
 
+/**
+ * https://www.w3.org/TR/webauthn/#assertion-options
+ */
 export class PublicKeyCredentialRequestOptions {
     /**
      * Creates an object from an base64 buffers encoded object
-     * @param {*} o object with challenge and user.id as base64 buffers
+     * @param {*} o object with challenge  and allowCredentials id element as base64 buffers
      */
     static decode(o){
         var obj = {}
+
+        // required
         obj.challenge = buff.decode(o.challenge)
-        obj.timeout = o.timeout
-        obj.allowCredentials = [    // TODO: only supports one credential
-            {
-                type: "public-key",
-                id: buff.decode(o.allowCredentials[0].id) 
-            }
-        ]
+        
+        // optional
+        if(o.timeout)
+            obj.timeout = o.timeout
+
+        if(o.allowCredentials)
+            obj.allowCredentials = [    // TODO: only supports one credential
+                {
+                    type: "public-key",
+                    id: buff.decode(o.allowCredentials[0].id) 
+                }
+            ]
+        
+        // if(o.userVerification)
+        //     obj.userVerification = o.userVerification
+        
+        // if(o.extensions)
+        //     obj.extensions = o.extensions
+
         return obj;
     }
     
     /**
      * Encodes the buffers in the object to base64
-     * @param {} o PublicKeyCredentialCreationOptions
+     * @param {} o PublicKeyCredentialRequestOptions
      */
     static encode(o){
-        var obj = {}
+       var obj = {}
+
+        // required
         obj.challenge = buff.encode(o.challenge)
-        obj.timeout = o.timeout
-        obj.allowCredentials = o.allowCredentials
+        
+        // optional
+        if(o.timeout)
+            obj.timeout = o.timeout
+
+        if(o.allowCredentials)
+            obj.allowCredentials = [    // TODO: only supports one credential
+                {
+                    type: "public-key",
+                    id: buff.encode(o.allowCredentials[0].id) 
+                }
+            ]
+        
+        // if(o.userVerification)
+        //     obj.userVerification = o.userVerification
+        
+        // if(o.extensions)
+        //     obj.extensions = o.extensions
+        
         return obj;
     }
 }

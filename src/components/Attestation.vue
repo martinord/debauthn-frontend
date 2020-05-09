@@ -161,8 +161,7 @@ export default {
             let url = "/attestation/options"
             axios.post(url, JSON.stringify({  }))
             .then((res) => {
-                this.options = PublicKeyCredentialCreationOptions.decode(res.data);
-                // TODO: change with HTML input
+                this.options = res.data;
                 this.options.user.name = "john.p.smith@example.com";
                 this.options.user.displayName =  "John P. Smith";
             })
@@ -174,8 +173,10 @@ export default {
             this.removeDialogs();
             this.current_step = 2;
             this.response = {}
-
-            navigator.credentials.create({ publicKey: this.options })
+            
+            navigator.credentials.create({ 
+                publicKey: PublicKeyCredentialCreationOptions.decode(this.options) 
+            })
             .then((response) => {
                 this.response = response
             })

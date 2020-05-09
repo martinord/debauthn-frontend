@@ -159,7 +159,7 @@ export default {
             let url = "/assertion/options"
             axios.post(url, JSON.stringify({  }))
             .then((res) => {
-                this.options = PublicKeyCredentialRequestOptions.decode(res.data);
+                this.options = res.data;
             })
             .catch((error) => {
                 this.onError(error)
@@ -170,7 +170,9 @@ export default {
             this.current_step = 2;
             this.response = {}
 
-            navigator.credentials.get({ publicKey: this.options })
+            navigator.credentials.get({
+                publicKey: PublicKeyCredentialRequestOptions.decode(this.options) 
+            })
             .then((response) => {
                 this.response = response
             })
