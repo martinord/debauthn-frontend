@@ -208,7 +208,8 @@ export default {
         },
         onError(error) {
             console.log("Catched error!")
-            if(error.response.data) this.error = error.response.data
+            if(error.response && error.response.data) 
+                this.error = error.response.data
             else this.error = error
             this.showError = true
         }
