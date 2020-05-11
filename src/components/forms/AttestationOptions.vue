@@ -94,6 +94,78 @@
                     ></v-text-field>
                 </v-col>
             </v-row>
+
+            <!-- optional -->
+
+            <v-row>
+                <v-col>
+                    <v-text-field
+                        v-model="form.timeout"
+                        label="Timeout"
+                        :rules="rules.timeout"
+                        :disabled="!editable"
+                        outlined
+                        rounded
+                        hint="optional"
+                    ></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-select
+                        v-model="form.attestation"
+                        label="Attestation Conveyance"
+                        :items="rules.attestation"
+                        :disabled="!editable"
+                        outlined
+                        rounded
+                        hint="optional"
+                    ></v-select>
+                </v-col>
+                <v-col>
+                    <v-text-field
+                        v-model="form.excludeCredentials"
+                        label="Exclude Credentials"
+                        :rules="rules.excludeCredentials"
+                        disabled
+                        outlined
+                        rounded
+                        hint="optional"
+                    ></v-text-field>
+                </v-col>
+            </v-row>
+            <label>Authenticator Selection</label>
+            <v-row>
+                <v-col>
+                    <v-select
+                        v-model="form.authenticatorSelection.authenticatorAttachment"
+                        label="Authenticator Attachment"
+                        :items="rules.authenticatorAttachment"
+                        :disabled="!editable"
+                        outlined
+                        rounded
+                        hint="optional"
+                    ></v-select>
+                </v-col>
+                <v-col>
+                    <v-checkbox
+                        v-model="form.authenticatorSelection.requiresResidentKey"
+                        label="Requires Resident Key"
+                        :disabled="!editable"
+                        required
+                        hint="optional"
+                    ></v-checkbox>
+                </v-col>
+                <v-col>
+                    <v-select
+                        v-model="form.authenticatorSelection.userVerification"
+                        label="Authenticator Attachment"
+                        :items="rules.userVerification"
+                        :disabled="!editable"
+                        outlined
+                        rounded
+                        hint="optional"
+                    ></v-select>
+                </v-col>
+            </v-row>
             
 
             <v-btn
@@ -143,7 +215,7 @@ export default {
                     displayName: ""
                 },
                 challenge: "",
-                pubKeyCredParams: []
+                pubKeyCredParams: [],
             },
             valid: false, //stores validation of the form
             editable: false,
@@ -157,7 +229,12 @@ export default {
                 userName: [],
                 userDisplayName: [],
                 challenge: [],
-                pubKeyCredParams: []
+                pubKeyCredParams: [],
+                timeout: [],
+                attestation: ['none', 'indirect', 'direct'],
+                excludeCredentials: [],
+                authenticatorAttachment: ['platform', 'cross-platform'],
+                userVerification: ['preferred', 'required', 'discouraged']
             }
         }
     },
@@ -165,6 +242,10 @@ export default {
         onUpdate() {
             console.log('Options were modified')
             if(this.valid){
+                if(this.form.authenticatorSelection.authenticatorAttachment == "")
+                    delete this.form.authenticatorSelection.authenticatorAttachment
+                if(this.form.authenticatorSelection.userVerification == "")
+                    delete this.form.authenticatorSelection.userVerification
                 this.$emit('updated', this.form)
                 this.editable = false
             }
@@ -176,6 +257,13 @@ export default {
         loadOptions() {
              // load a deep copy of the object to the form to avoid data binding
             this.form = JSON.parse(JSON.stringify(this.options))
+            if(!this.form.authenticatorSelection){
+                this.form.authenticatorSelection = {
+                    authenticatorAttachment: "",
+                    requiresResidentKey: false,
+                    userVerification: ""
+                }
+            }
         }
     },
     watch: {

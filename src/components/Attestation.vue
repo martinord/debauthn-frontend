@@ -175,6 +175,8 @@ export default {
             this.current_step = 2;
             this.response = {}
             
+            console.log(this.options)
+            console.log(PublicKeyCredentialCreationOptions.decode(this.options))
             navigator.credentials.create({ 
                 publicKey: PublicKeyCredentialCreationOptions.decode(this.options) 
             })
