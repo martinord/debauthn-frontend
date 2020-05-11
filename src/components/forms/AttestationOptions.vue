@@ -115,6 +115,7 @@
                         label="Attestation Conveyance"
                         :items="rules.attestation"
                         :disabled="!editable"
+                        clearable
                         outlined
                         rounded
                         hint="optional"
@@ -140,6 +141,7 @@
                         label="Authenticator Attachment"
                         :items="rules.authenticatorAttachment"
                         :disabled="!editable"
+                        clearable
                         outlined
                         rounded
                         hint="optional"
@@ -160,6 +162,7 @@
                         label="Authenticator Attachment"
                         :items="rules.userVerification"
                         :disabled="!editable"
+                        clearable
                         outlined
                         rounded
                         hint="optional"
