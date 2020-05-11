@@ -19,6 +19,58 @@
                     ></v-text-field>
                 </v-col>
             </v-row>
+
+            <!-- optional -->
+            
+            <v-row>
+                <v-col>
+                    <v-text-field
+                        v-model="form.timeout"
+                        label="Timeout"
+                        :rules="rules.timeout"
+                        :disabled="!editable"
+                        outlined
+                        rounded
+                        hint="optional"
+                    ></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field
+                        v-model="form.rp.id"
+                        label="R.P. id"
+                        :rules="rules.rpId"
+                        :disabled="!editable"
+                        outlined
+                        rounded
+                        hint="optional"
+                    ></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-select
+                        v-model="form.userVerification"
+                        label="User Verification"
+                        :items="rules.userVerification"
+                        :disabled="!editable"
+                        clearable
+                        outlined
+                        rounded
+                        hint="optional"
+                    ></v-select>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <v-text-field
+                        v-model="form.allowCredentials"
+                        label="Allow Credentials"
+                        :rules="rules.allowCredentials"
+                        disabled
+                        outlined
+                        rounded
+                        hint="optional"
+                    ></v-text-field>
+                </v-col>
+            </v-row>
             
 
             <v-btn
@@ -66,6 +118,10 @@ export default {
                 required: [v => !!v || 'This field is required'],
                 // specific validation rules
                 challenge: [],
+                timeout: [],
+                rpId: [],
+                userVerification: ['required', 'preferred', 'discouraged'],
+                allowCredentials: []
             }
         }
     },
@@ -84,6 +140,8 @@ export default {
         loadOptions() {
              // load a deep copy of the object to the form to avoid data binding
             this.form = JSON.parse(JSON.stringify(this.options))
+            if(!this.form.rp)
+                this.form.rp = {id:""}
         }
     },
     watch: {
