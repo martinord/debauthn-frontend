@@ -11,6 +11,7 @@
                         v-model="form.challenge"
                         label="Challenge"
                         :rules="rules.required.concat(rules.challenge)"
+                        :disabled="!editable"
                         outlined
                         rounded
                         required
@@ -21,11 +22,28 @@
             
 
             <v-btn
-                :disabled="!valid"
+                v-if="!editable"
                 text
+                @click="editable=true"
+            >
+                Edit options
+            </v-btn>
+
+            <v-btn
+                v-if="editable"
+                :disabled="!valid"
+                color="success"
                 @click="onUpdate()"
             >
                 Update
+            </v-btn>
+
+            <v-btn
+                v-if="editable"
+                text
+                @click="onCancel()"
+            >
+                Cancel
             </v-btn>
         </v-form>
     </div>
@@ -42,6 +60,7 @@ export default {
                 challenge: ""
             },
             valid: false, //stores validation of the form
+            editable: false,
             rules: {
                 // main validation rules
                 required: [v => !!v || 'This field is required'],
@@ -53,14 +72,23 @@ export default {
     methods: {
         onUpdate() {
             console.log('Options were modified')
-            if(this.valid)
+            if(this.valid){
                 this.$emit('updated', this.form)
+                this.editable = false
+            }
+        },
+        onCancel() {
+            this.loadOptions()
+            this.editable = false
+        },
+        loadOptions() {
+             // load a deep copy of the object to the form to avoid data binding
+            this.form = JSON.parse(JSON.stringify(this.options))
         }
     },
     watch: {
         options: function() {
-            // load a deep copy of the object to the form to avoid data binding
-            this.form = JSON.parse(JSON.stringify(this.options))
+           this.loadOptions()
         }
     },
 }

@@ -12,6 +12,7 @@
                         v-model="form.rp.id"
                         label="R.P. id"
                         :rules="rules.required.concat(rules.rpId)"
+                        :disabled="!editable"
                         outlined
                         rounded
                         required
@@ -22,6 +23,7 @@
                         v-model="form.rp.name"
                         label="R.P. name"
                         :rules="rules.required.concat(rules.rpName)"
+                        :disabled="!editable"
                         outlined
                         rounded
                         required
@@ -35,6 +37,7 @@
                         v-model="form.user.id"
                         label="User id"
                         :rules="rules.required.concat(rules.userId)"
+                        :disabled="!editable"
                         outlined
                         rounded
                         required
@@ -46,6 +49,7 @@
                         v-model="form.user.name"
                         label="User name"
                         :rules="rules.required.concat(rules.userName)"
+                        :disabled="!editable"
                         outlined
                         rounded
                         required
@@ -56,6 +60,7 @@
                         v-model="form.user.displayName"
                         label="R.P. name"
                         :rules="rules.required.concat(rules.userDisplayName)"
+                        :disabled="!editable"
                         outlined
                         rounded
                         required
@@ -68,6 +73,7 @@
                         v-model="form.challenge"
                         label="Challenge"
                         :rules="rules.required.concat(rules.challenge)"
+                        :disabled="!editable"
                         outlined
                         rounded
                         required
@@ -91,12 +97,30 @@
             
 
             <v-btn
-                :disabled="!valid"
+                v-if="!editable"
                 text
+                @click="editable=true"
+            >
+                Edit options
+            </v-btn>
+
+            <v-btn
+                v-if="editable"
+                :disabled="!valid"
+                color="success"
                 @click="onUpdate()"
             >
                 Update
             </v-btn>
+
+            <v-btn
+                v-if="editable"
+                text
+                @click="onCancel()"
+            >
+                Cancel
+            </v-btn>
+
         </v-form>
     </div>
 </template>
@@ -122,6 +146,7 @@ export default {
                 pubKeyCredParams: []
             },
             valid: false, //stores validation of the form
+            editable: false,
             rules: {
                 // main validation rules
                 required: [v => !!v || 'This field is required'],
@@ -139,14 +164,23 @@ export default {
     methods: {
         onUpdate() {
             console.log('Options were modified')
-            if(this.valid)
+            if(this.valid){
                 this.$emit('updated', this.form)
+                this.editable = false
+            }
+        },
+        onCancel() {
+            this.loadOptions()
+            this.editable = false
+        },
+        loadOptions() {
+             // load a deep copy of the object to the form to avoid data binding
+            this.form = JSON.parse(JSON.stringify(this.options))
         }
     },
     watch: {
         options: function() {
-            // load a deep copy of the object to the form to avoid data binding
-            this.form = JSON.parse(JSON.stringify(this.options))
+           this.loadOptions()
         }
     },
 }
