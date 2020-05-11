@@ -129,6 +129,7 @@ export default {
         onUpdate() {
             console.log('Options were modified')
             if(this.valid){
+                if(this.form.rp.id == "") delete this.form.rp
                 this.$emit('updated', this.form)
                 this.editable = false
             }
