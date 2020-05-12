@@ -36,7 +36,7 @@
                 </v-col>
                 <v-col>
                     <v-text-field
-                        v-model="form.rp.id"
+                        v-model="form.rpId"
                         label="R.P. id"
                         :rules="rules.rpId"
                         :disabled="!editable"
@@ -129,7 +129,6 @@ export default {
         onUpdate() {
             console.log('Options were modified')
             if(this.valid){
-                if(this.form.rp.id == "") delete this.form.rp
                 this.$emit('updated', this.form)
                 this.editable = false
             }
@@ -141,8 +140,6 @@ export default {
         loadOptions() {
              // load a deep copy of the object to the form to avoid data binding
             this.form = JSON.parse(JSON.stringify(this.options))
-            if(!this.form.rp)
-                this.form.rp = {id:""}
         }
     },
     watch: {
