@@ -7,7 +7,7 @@
         >
             <label>R.P.</label>
             <v-row>
-                <v-col>
+                <v-col class="col-12 col-sm-6">
                     <v-text-field class="col"
                         v-model="form.rp.id"
                         label="R.P. id"
@@ -18,7 +18,7 @@
                         required
                     ></v-text-field>
                 </v-col>
-                <v-col>
+                <v-col class="col-12 col-sm-6">
                     <v-text-field class="col"
                         v-model="form.rp.name"
                         label="R.P. name"
@@ -32,7 +32,7 @@
             </v-row>
             <label>User</label>
             <v-row>
-                <v-col>
+                <v-col class="col-12 col-md-4">
                     <v-text-field
                         v-model="form.user.id"
                         label="User id"
@@ -44,7 +44,7 @@
                         hint="base64 string"
                     ></v-text-field>
                 </v-col>        
-                <v-col>
+                <v-col class="col-12 col-sm-6 col-md-4">
                     <v-text-field
                         v-model="form.user.name"
                         label="User name"
@@ -55,7 +55,7 @@
                         required
                     ></v-text-field>
                 </v-col>
-                <v-col>
+                <v-col class="col-12 col-sm-6 col-md-4">
                     <v-text-field
                         v-model="form.user.displayName"
                         label="R.P. name"
@@ -98,7 +98,7 @@
             <!-- optional -->
 
             <v-row>
-                <v-col>
+                <v-col class="col-12 col-md-4">
                     <v-text-field
                         v-model="form.timeout"
                         label="Timeout"
@@ -109,7 +109,7 @@
                         hint="optional"
                     ></v-text-field>
                 </v-col>
-                <v-col>
+                <v-col class="col-12 col-md-4">
                     <v-select
                         v-model="form.attestation"
                         label="Attestation Conveyance"
@@ -121,7 +121,7 @@
                         hint="optional"
                     ></v-select>
                 </v-col>
-                <v-col>
+                <v-col class="col-12 col-md-4">
                     <v-text-field
                         v-model="form.excludeCredentials"
                         label="Exclude Credentials"
@@ -135,7 +135,7 @@
             </v-row>
             <label>Authenticator Selection</label>
             <v-row>
-                <v-col>
+                <v-col class="col-12 col-md-4">
                     <v-select
                         v-model="form.authenticatorSelection.authenticatorAttachment"
                         label="Authenticator Attachment"
@@ -156,7 +156,7 @@
                         hint="optional"
                     ></v-checkbox>
                 </v-col>
-                <v-col>
+                <v-col class="col-12 col-md-4">
                     <v-select
                         v-model="form.authenticatorSelection.userVerification"
                         label="Authenticator Attachment"

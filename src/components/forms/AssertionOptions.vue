@@ -23,7 +23,7 @@
             <!-- optional -->
             
             <v-row>
-                <v-col>
+                <v-col class="col-12 col-md-4">
                     <v-text-field
                         v-model="form.timeout"
                         label="Timeout"
@@ -34,7 +34,7 @@
                         hint="optional"
                     ></v-text-field>
                 </v-col>
-                <v-col>
+                <v-col class="col-12 col-md-4">
                     <v-text-field
                         v-model="form.rpId"
                         label="R.P. id"
@@ -45,7 +45,7 @@
                         hint="optional"
                     ></v-text-field>
                 </v-col>
-                <v-col>
+                <v-col class="col-12 col-md-4">
                     <v-select
                         v-model="form.userVerification"
                         label="User Verification"
