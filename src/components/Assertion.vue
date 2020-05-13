@@ -51,11 +51,21 @@
             </v-stepper-step>
             <v-stepper-content step="2">
                 <v-card
+                    v-if="!loading"
                     class="mb-12"
                     color="grey lighten-1"
                 >
                     {{ response }}
                 </v-card>
+                <v-container 
+                    class="mb-8"
+                    v-if="loading"
+                >
+                    <v-progress-linear
+                        indeterminate
+                        color="primary darken-1"
+                    ></v-progress-linear>
+                </v-container>
                 
                 <v-btn
                     color="primary"
@@ -138,6 +148,7 @@ export default {
       showSuccess: false,
       showError: false,
       error: "An error occurred",
+      loading: true,
       current_step: 1,
       options:{},
       response: {},
@@ -152,6 +163,7 @@ export default {
             this.options = {},
             this.response = {},
             this.validation = {}
+            this.loading = true
             this.request()
         },
         request() {
@@ -177,6 +189,7 @@ export default {
                 publicKey: PublicKeyCredentialRequestOptions.decode(this.options) 
             })
             .then((response) => {
+                this.loading = false
                 this.response = response
             })
             .catch((error) => {
