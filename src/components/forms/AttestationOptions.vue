@@ -171,12 +171,13 @@
             </v-row>
             
 
-            <v-btn
+             <v-btn
                 v-if="!editable"
-                text
+                fab small
+                color="primary"
                 @click="editable=true"
             >
-                Edit options
+                <v-icon>mdi-pencil</v-icon>
             </v-btn>
 
             <v-btn
