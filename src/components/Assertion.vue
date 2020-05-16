@@ -52,7 +52,7 @@
             <v-stepper-content step="2">
                 <v-card
                     class="mb-12"
-                    color="grey lighten-1"
+                    color="grey lighten-3"
                 >
                     <object-tree
                         :object="encoded_response.response">
@@ -90,7 +90,7 @@
             <v-stepper-content step="3">
                 <v-card
                     class="mb-12"
-                    color="grey lighten-1"
+                    color="grey lighten-3"
                 > 
                     <object-tree
                         :object="validation.data"
@@ -190,6 +190,8 @@ export default {
             this.removeDialogs();
             this.current_step = 2;
             this.response = {}
+            this.encoded_response = {}
+            this.loading = true
 
             navigator.credentials.get({
                 publicKey: PublicKeyCredentialRequestOptions.decode(this.options) 
