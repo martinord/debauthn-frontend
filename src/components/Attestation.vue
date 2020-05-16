@@ -91,7 +91,9 @@
                     class="mb-12"
                     color="grey lighten-1"
                 >
-                    {{ validation }}
+                    <object-tree
+                        :object="validation.data"
+                    ></object-tree>
                 </v-card>
 
                 <v-btn
@@ -138,11 +140,13 @@ axios.defaults.headers.common['Content-Type'] = "application/json;charset=UTF-8"
 import { PublicKeyCredentialCreationOptions, AuthenticatorAttestationResponse } 
     from '../models/attestation.model'
 import AttestationOptions from './forms/AttestationOptions'
+import ObjectTree from './ObjectTree';
 
 export default {
     name: "Attestation",
     components: {
-        'attestation-options': AttestationOptions
+        'attestation-options': AttestationOptions,
+        'object-tree': ObjectTree
     },
     data: () => ({
       showSuccess: false,
@@ -209,7 +213,7 @@ export default {
             axios.post(url, data)
             .then((res) => {
                 this.validation = res.data
-                if(res.data.audit.complete)
+                if(this.validation.complete)
                     this.showSuccess = true
             })
             .catch((error) => {
