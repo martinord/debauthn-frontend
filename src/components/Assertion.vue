@@ -51,11 +51,12 @@
             </v-stepper-step>
             <v-stepper-content step="2">
                 <v-card
-                    v-if="!loading"
                     class="mb-12"
                     color="grey lighten-1"
                 >
-                    {{ response }}
+                    <object-tree
+                        :object="encoded_response.response">
+                    </object-tree>
                 </v-card>
                 <v-container 
                     class="mb-8"
@@ -156,7 +157,8 @@ export default {
       current_step: 1,
       options:{},
       response: {},
-      validation: {}
+      validation: {},
+      encoded_response: {}
     }),
     methods: {
         removeDialogs() {
@@ -193,8 +195,9 @@ export default {
                 publicKey: PublicKeyCredentialRequestOptions.decode(this.options) 
             })
             .then((response) => {
-                this.loading = false
                 this.response = response
+                this.encoded_response = AuthenticatorAssertionResponse.encode(this.response)
+                this.loading = false
             })
             .catch((error) => {
                 this.onError(error)
@@ -207,7 +210,7 @@ export default {
 
             // send authenticator response and wait for verification
             let url = "/assertion/result"
-            var data = AuthenticatorAssertionResponse.encode(this.response)
+            var data = this.encoded_response
             axios.post(url, data)
             .then((res) => {
                 this.validation = res.data
