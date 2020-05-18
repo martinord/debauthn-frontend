@@ -81,7 +81,6 @@ export default {
     watch: {
         object: function() {
             this.items = this.parseObject(this.object)
-            console.log(this.items)
         }
     },
     computed: {
