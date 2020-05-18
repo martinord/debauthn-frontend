@@ -37,12 +37,12 @@
                 Continue
                 </v-btn>
 
-                <v-btn 
-                    text
+                <v-icon
+                    class="ml-4 mr-4"
                     @click="request()"
                 >
-                Reload
-                </v-btn>
+                    mdi-reload
+                </v-icon>
             </v-stepper-content>
 
             <v-stepper-step :complete="current_step > 2" step="2">
@@ -75,12 +75,12 @@
                 Continue
                 </v-btn>
 
-                <v-btn 
-                    text
+                <v-icon
+                    class="ml-4 mr-4"
                     @click="authenticator()"
                 >
-                Reload
-                </v-btn>
+                    mdi-reload
+                </v-icon>
             </v-stepper-content>
 
             <v-stepper-step step="3">
