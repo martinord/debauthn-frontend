@@ -116,7 +116,15 @@
                 <v-card-title class="headline">Successful</v-card-title>
 
                 <v-card-text>
-                You have successfully authenticated the credential through Assertion operation.
+                    <v-banner>You have successfully authenticated the credential through Assertion operation.</v-banner>
+                    
+                    <v-alert 
+                        v-for="warning in this.validation.warnings" :key="warning"
+                        type="warning"
+                    >
+                        {{ warning[0] }}: {{ warning[1] }}
+                    </v-alert>
+                
                 </v-card-text>
 
                 <v-card-actions>

@@ -116,7 +116,15 @@
                 <v-card-title class="headline">Successful</v-card-title>
 
                 <v-card-text>
-                You have successfully registered the credential through Attestation operation.
+                    <v-banner>You have successfully registered the credential through Attestation operation.</v-banner>
+                    
+                    <v-alert 
+                        v-for="warning in this.validation.warnings" :key="warning"
+                        type="warning"
+                    >
+                        {{ warning[0] }}: {{ warning[1] }}
+                    </v-alert>
+
                 </v-card-text>
 
                 <v-card-actions>
