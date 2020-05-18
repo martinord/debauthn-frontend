@@ -1,12 +1,49 @@
 <template>
-    <v-treeview
-        rounded
-        hoverable
-        activatable
-        open-on-click
-        :items="items"
-    >
-    </v-treeview>
+    <v-row class="pa-1">
+        <v-col class="col-12 col-md-4 ma-1">
+            <h4 mb-1>Explorer</h4>
+            <v-treeview
+                rounded
+                :active.sync="active"
+                selection-type="independent"
+                return-object
+                activatable
+                open-on-click
+                :items="items"
+            >
+                <template v-slot:prepend="{ item }">
+                    <v-icon v-if="item.value">
+                        mdi-code-json
+                    </v-icon>
+                    <v-icon v-else-if="item.children.length > 0">
+                        mdi-file-tree
+                    </v-icon>
+                    <v-icon v-else>
+                        mdi-file-alert
+                    </v-icon>
+                </template>
+            </v-treeview>
+        </v-col>
+        <v-divider vertical></v-divider>
+        <v-col class="col-12 col-md-7 ma-1" style="align-self: center">
+            <div
+                v-if="!selected"
+                class="grey--text pl-2"
+            >
+                Select a field
+            </div>
+            <v-card
+                mx-auto
+                v-else
+                dark
+            >
+                <v-card-text>
+                    {{ selected.value }}
+                </v-card-text>
+            </v-card>
+        </v-col>
+        
+    </v-row>
 </template>
 
 <script>
@@ -15,21 +52,27 @@ export default {
     props: ['object'],
     data() {
         return {
-           items:[]
+           items:[],
+           active: [],
+           n: 0
         }
     },
     methods: {
         parseObject(o) {
-            if(typeof o !== 'object')
-                return [{name: JSON.stringify(o)}]
             var myItems = []
             for(let [key, value] of Object.entries(o)) {
-                let propName = key, propChildren = []
-                if(value !== null)
-                    propChildren = this.parseObject(value)
+                let propName = key, propChildren = [], propValue = ""
+                if(value !== null){
+                    if(typeof value !== 'object')
+                        propValue = JSON.stringify(value)
+                    else
+                        propChildren = this.parseObject(value)
+                }
                 myItems.push({
+                    id: this.n++,
                     name: propName,
-                    children: propChildren
+                    children: propChildren,
+                    value: propValue
                 })
             }
             return myItems
@@ -38,6 +81,14 @@ export default {
     watch: {
         object: function() {
             this.items = this.parseObject(this.object)
+            console.log(this.items)
+        }
+    },
+    computed: {
+        selected() {
+            if (!this.active.length) return undefined
+
+            return this.active[0]
         }
     }
     
