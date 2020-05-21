@@ -30,6 +30,16 @@
                     @updated="options=$event"
                 ></attestation-options>
 
+                <v-container 
+                    class="mb-8"
+                    v-if="loading"
+                >
+                    <v-progress-linear
+                        indeterminate
+                        color="primary darken-1"
+                    ></v-progress-linear>
+                </v-container>
+                
                 <v-btn
                     color="primary"
                     @click="authenticator()"
@@ -96,7 +106,15 @@
                         :object="validation.data"
                     ></object-tree>
                 </v-card>
-
+                <v-container 
+                    class="mb-8"
+                    v-if="loading"
+                >
+                    <v-progress-linear
+                        indeterminate
+                        color="primary darken-1"
+                    ></v-progress-linear>
+                </v-container>
                 <v-btn
                     color="primary"
                     @click="start()"
@@ -183,6 +201,7 @@ export default {
         request() {
             this.removeDialogs();
             this.current_step = 1;
+            this.loading = true;
 
             // request options for sending to authenticator
             let url = "/attestation/options"
@@ -191,6 +210,7 @@ export default {
                 this.options = res.data;
                 this.options.user.name = "john.p.smith@example.com";
                 this.options.user.displayName =  "John P. Smith";
+                this.loading = false
             })
             .catch((error) => {
                 this.onError(error)
@@ -219,6 +239,7 @@ export default {
             this.removeDialogs();
             this.current_step = 3;
             this.validation = {}
+            this.loading = true
 
             // send authenticator response and wait for verification
             let url = "/attestation/result"
@@ -228,6 +249,7 @@ export default {
                 this.validation = res.data
                 if(this.validation.complete)
                     this.showSuccess = true
+                this.loading = false
             })
             .catch((error) => {
                 this.onError(error)
