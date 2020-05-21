@@ -47,6 +47,33 @@
       </v-footer>
     </div>
 
+    <!-- notification dialog -->
+
+    <v-dialog 
+      v-model="showNotification"
+      max-width="700"
+    >
+      <v-card dark>
+        <v-card-title>Disclaimer</v-card-title>
+        <v-card-text>
+          <p>
+            <v-icon medium>mdi-alert-circle</v-icon>
+            This site is part of an investigation on WebAuthn. The tool is currently under development.
+            However, feel free to try it. Any comments are welcome: martino.rivera.dourado at udc dot es 
+          </p>
+        </v-card-text>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+                text
+                @click="showNotification = false"
+            >
+                Dismiss
+            </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
   </v-app>
 
 </template>
@@ -56,7 +83,12 @@
 export default {
   name: 'App',
   components:{
-  }
+  },
+  data() {
+    return {
+      showNotification: true
+    }
+  },
 };
 
 </script>
