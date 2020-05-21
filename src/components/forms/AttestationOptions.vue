@@ -58,7 +58,7 @@
                 <v-col class="col-12 col-sm-6 col-md-4">
                     <v-text-field
                         v-model="form.user.displayName"
-                        label="R.P. name"
+                        label="User display name"
                         :rules="rules.required.concat(rules.userDisplayName)"
                         :disabled="!editable"
                         outlined
@@ -261,7 +261,8 @@ export default {
         loadOptions() {
              // load a deep copy of the object to the form to avoid data binding
             this.form = JSON.parse(JSON.stringify(this.options))
-            if(!this.form.authenticatorSelection){
+
+            if(!Object.prototype.hasOwnProperty.call(this.form, "authenticatorSelection")){
                 this.form.authenticatorSelection = {
                     authenticatorAttachment: "",
                     requiresResidentKey: false,
