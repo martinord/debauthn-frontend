@@ -19,7 +19,12 @@
 
         <v-stepper class="mt-12" v-model="current_step" vertical>
 
-            <v-stepper-step editable :complete="current_step > 1" step="1">
+            <v-stepper-step 
+                editable 
+                :complete="current_step > 1"
+                :rules="[() => !errorOnStep[0]]" 
+                step="1"
+            >
                 Assertion options
                 <small>Request and edit Assertion options</small>
             </v-stepper-step>
@@ -41,6 +46,7 @@
 
                 <v-btn
                     color="primary"
+                    :disabled="errorOnStep[0]"
                     @click="authenticator()"
                 >
                 Continue
@@ -54,7 +60,11 @@
                 </v-icon>
             </v-stepper-content>
 
-            <v-stepper-step :complete="current_step > 2" step="2">
+            <v-stepper-step 
+                :complete="current_step > 2" 
+                :rules="[() => !errorOnStep[1]]"
+                step="2"
+            >
                 Call the authenticator
                 <small>Request authenticator through WebAuthn API</small>
             </v-stepper-step>
@@ -79,6 +89,7 @@
                 
                 <v-btn
                     color="primary"
+                    :disabled="errorOnStep[1]"
                     @click="post()"
                 >
                 Continue
@@ -92,7 +103,10 @@
                 </v-icon>
             </v-stepper-content>
 
-            <v-stepper-step step="3">
+            <v-stepper-step 
+                :rules="[() => !errorOnStep[2]]"
+                step="3"
+            >
                 Validation
                 <small>Send result and request its validation</small>
             </v-stepper-step>
@@ -117,6 +131,7 @@
 
                 <v-btn
                     color="primary"
+                    :disabled="errorOnStep[2]"
                     @click="start()"
                 >
                 Finish
@@ -181,6 +196,7 @@ export default {
       error: "An error occurred",
       loading: true,
       current_step: 1,
+      errorOnStep: [false, false, false],
       options:{},
       response: {},
       validation: {},
@@ -209,8 +225,10 @@ export default {
             .then((res) => {
                 this.options = res.data;
                 this.loading = false
+                this.errorOnStep[0] = false
             })
             .catch((error) => {
+                this.errorOnStep[0] = true
                 this.onError(error)
             })
         },
@@ -228,8 +246,10 @@ export default {
                 this.response = response
                 this.encoded_response = AuthenticatorAssertionResponse.encode(this.response)
                 this.loading = false
+                this.errorOnStep[1] = false
             })
             .catch((error) => {
+                this.errorOnStep[1] = true
                 this.onError(error)
             })
         },
@@ -248,8 +268,10 @@ export default {
                 if(this.validation.complete)
                     this.showSuccess = true
                 this.loading = false
+                this.errorOnStep[2] = false
             })
             .catch((error) => {
+                this.errorOnStep[2] = true
                 this.onError(error)
             })           
         },
