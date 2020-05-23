@@ -60,18 +60,61 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <v-text-field
-                        v-model="form.allowCredentials"
-                        label="Allow Credentials"
-                        :rules="rules.allowCredentials"
-                        disabled
-                        outlined
-                        rounded
-                        hint="optional"
-                    ></v-text-field>
+                    <label>Allow Credentials</label>
+                    <v-row>
+                        <v-col>
+                            <v-card :disabled="!editable" outlined>
+                                <v-form>
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <div class="overline mb-4">{{"public-key"}}</div>
+                                            <v-text-field
+                                                v-model="newCredentialId"
+                                                label="Credential id"
+                                                :disabled="!editable"
+                                                hint="base64"
+                                            ></v-text-field>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                    <v-card-actions>
+                                        <v-btn 
+                                            @click="addCredential"
+                                            fab x-small
+                                            color="primary"
+                                            class="ml-2 mb-2"
+                                            :disabled="!editable || newCredentialId == ''"
+                                        >
+                                            <v-icon> mdi-key-plus </v-icon>
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-form>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                    <v-row v-for="credential in form.allowCredentials" :key="credential.id">
+                        <v-col>
+                            <v-card :disabled="!editable" hover>
+                                <v-list-item>
+                                    <v-list-item-content>
+                                        <div class="overline mb-4">{{credential.type}}</div>
+                                        <div>{{credential.id}}</div>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-card-actions>
+                                    <v-icon 
+                                        @click="deleteCredential(credential.id)"
+                                        class="ma-2"
+                                        :disabled="!editable"
+                                    >
+                                        mdi-key-remove
+                                    </v-icon>
+                                </v-card-actions>
+                            </v-card>
+                        </v-col>
+                    </v-row>
                 </v-col>
             </v-row>
-            
+
 
             <v-btn
                 v-if="!editable"
@@ -110,8 +153,10 @@ export default {
     data() {
         return {
             form:{
-                challenge: ""
+                challenge: "",
+                allowCredentials: []
             },
+            newCredentialId:"",
             valid: false, //stores validation of the form
             editable: false,
             rules: {
@@ -141,6 +186,21 @@ export default {
         loadOptions() {
              // load a deep copy of the object to the form to avoid data binding
             this.form = JSON.parse(JSON.stringify(this.options))
+        },
+        addCredential() {
+            if(this.newCredentialId === "") return
+            if(this.form.allowCredentials == undefined)
+                this.form.allowCredentials = []
+            this.form.allowCredentials.push({
+                type:"public-key",
+                id: this.newCredentialId
+            })
+            this.newCredentialId = ""
+        },
+        deleteCredential(id){
+            this.form.allowCredentials = 
+                this.form.allowCredentials.filter(item => item.id !== id)
+
         }
     },
     watch: {
