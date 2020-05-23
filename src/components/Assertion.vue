@@ -46,7 +46,7 @@
 
                 <v-btn
                     color="primary"
-                    :disabled="errorOnStep[0]"
+                    :disabled="errorOnStep[0] || loading"
                     @click="authenticator()"
                 >
                 Continue
@@ -89,7 +89,7 @@
                 
                 <v-btn
                     color="primary"
-                    :disabled="errorOnStep[1]"
+                    :disabled="errorOnStep[1] || loading"
                     @click="post()"
                 >
                 Continue
@@ -131,7 +131,7 @@
 
                 <v-btn
                     color="primary"
-                    :disabled="errorOnStep[2]"
+                    :disabled="errorOnStep[2] || loading"
                     @click="start()"
                 >
                 Finish
@@ -286,6 +286,7 @@ export default {
                 this.error = error.response.data
             else this.error = error
             this.showError = true;
+            this.loading = false
         }
     },
     mounted() {
