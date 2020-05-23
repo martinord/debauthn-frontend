@@ -74,7 +74,7 @@
                     color="grey lighten-3"
                 >
                     <object-tree
-                        :object="encoded_response.response">
+                        :object="encoded_response">
                     </object-tree>
                 </v-card>
                 <v-container 
