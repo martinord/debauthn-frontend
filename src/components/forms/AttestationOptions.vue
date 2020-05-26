@@ -159,7 +159,7 @@
                 <v-col class="col-12 col-md-4">
                     <v-select
                         v-model="form.authenticatorSelection.userVerification"
-                        label="Authenticator Attachment"
+                        label="User verification"
                         :items="rules.userVerification"
                         :disabled="!editable"
                         clearable
