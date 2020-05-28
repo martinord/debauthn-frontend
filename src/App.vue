@@ -20,8 +20,9 @@
       <!-- tabs routing -->
 
       <v-row>
-        <v-tabs class="ml-2">
+        <v-tabs>
           <v-tabs-slider></v-tabs-slider>
+          <v-tab to="/">Dashboard</v-tab>
           <v-tab to="/attestation">Attestation</v-tab>
           <v-tab to="/assertion">Assertion</v-tab>
         </v-tabs>
