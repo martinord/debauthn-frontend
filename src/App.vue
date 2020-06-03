@@ -91,6 +91,7 @@ hr {
 
 .logo {
   max-height: 140px;
+  max-width: 100%;
 }
 
 .header {
