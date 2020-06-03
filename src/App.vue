@@ -6,7 +6,7 @@
       <v-row class="header mb-4 mt-4 pa-5 pb-6 primary lighten-3 elevation-5">
         <v-col>
           <v-row justify="center" align="center">
-            <img src="./assets/header.svg" class="logo" />
+            <img src="./assets/header.png" class="logo" />
           </v-row>
           <!-- <v-row class="pa-5 subtitle-1 font-thin">WebAuthn Authenticator Debugging Tool</v-row> -->
         </v-col>
