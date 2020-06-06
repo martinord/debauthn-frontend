@@ -5,7 +5,7 @@
 
       <v-row class="header mb-4 mt-4 pa-5 pb-6 primary lighten-3 elevation-5">
         <v-col>
-          <v-row justify="center" align="center">
+          <v-row @click="$router.push({path:'/'})" justify="center" align="center">
             <img src="./assets/header.png" class="logo" />
           </v-row>
           <!-- <v-row class="pa-5 subtitle-1 font-thin">WebAuthn Authenticator Debugging Tool</v-row> -->
@@ -14,12 +14,11 @@
 
       <!-- tabs routing -->
 
-      <v-row justify="center">
-        <v-tabs>
-          <v-tabs-slider></v-tabs-slider>
+      <v-row justify="center" class="elevation-3">
+        <v-tabs background-color="primary" dark show-arrows>
           <v-tab to="/">Dashboard</v-tab>
-          <v-tab to="/attestation">Attestation</v-tab>
-          <v-tab to="/assertion">Assertion</v-tab>
+          <v-tab to="/attestation">Register</v-tab>
+          <v-tab to="/assertion">Authenticate</v-tab>
         </v-tabs>
       </v-row>
 

@@ -1,7 +1,30 @@
 <template>
     <v-content>
         
-        <v-banner>Attestation operation registers an authenticator in the system</v-banner>
+        <v-alert
+            class="mb-5"
+            type="info"
+            icon="mdi-account-key"
+            colored-border
+            border="bottom"
+            prominent
+            color="primary"
+        >
+            <div class="overline mb-3">Attestation ceremony</div>
+
+            This section allows to <b>register a credential through Attestation operation</b>.
+            The operation requires an authenticator compatible with <a href="https://www.w3.org/TR/webauthn/#sctn-authenticator-model" target="_blank"> WebAuthn Authenticator Model</a>.
+            
+            <v-divider class="mb-2 mt-2"></v-divider>
+            
+            Any authenticator compatible with FIDO U2F/CTAP1 or FIDO2/CTAP2. This includes, among others, any Yubikey, SoloKey, Google Titan Keys or an Android OS >=7.0.
+            
+            <v-divider class="mb-2 mt-2"></v-divider>
+            
+            <b>The authenticator will create a new key pair (credential), and post the public key to the server.</b>
+            
+            <v-divider class="mb-2 mt-2"></v-divider>
+        </v-alert>
 
         <!-- dinamic alert on error -->
 
@@ -25,10 +48,19 @@
                 :rules="[() => !errorOnStep[0]]"
                 step="1"
             >
-                Attestation options
-                <small>Request and edit Attestation options</small>
+                Registration options
+                <small>Attestation options</small>
             </v-stepper-step>
             <v-stepper-content step="1">
+
+                <v-banner 
+                    class="mb-5 elevation-3"
+                >
+                    <b>The following form shows the Attestation options fetched from the server</b>
+                    <hr class="ma-2">
+                    Here you can modify the options before they are sent to the authenticator.
+                    Also, you can fetch new options from the server with the reload button at the bottom. 
+                </v-banner>
 
                 <attestation-options class="mb-5"
                     :options="options"
@@ -70,6 +102,16 @@
                 <small>Request authenticator through WebAuthn API</small>
             </v-stepper-step>
             <v-stepper-content step="2">
+
+                <v-banner 
+                    class="mb-5 elevation-3"
+                >
+                    <b>The authenticator has been requested</b>
+                    <hr class="ma-2">
+                    Once the authenticator responds with the information it will be shown in this section.
+                    You can navigate through the encoded infromation by clicking on the fields.  
+                </v-banner>
+
                 <v-card
                     class="mb-12"
                     color="grey lighten-3"                    
@@ -112,6 +154,17 @@
                 <small>Send result and request its validation</small>
             </v-stepper-step>
             <v-stepper-content step="3">
+
+                <v-banner 
+                    class="mb-5 elevation-3"
+                >
+                    <b>The result has been posted to the server, parsed and validated</b>
+                    <hr class="ma-2">
+                    You can navigate through the infromation by clicking on the fields.
+                    Here you will find information about your authenticator as well as
+                    the decoded data exchanged during the operation. 
+                </v-banner>
+
                 <v-card
                     class="mb-12"
                     color="grey lighten-3"
@@ -146,10 +199,28 @@
             max-width="700"
         >
             <v-card>
-                <v-card-title class="headline">Successful</v-card-title>
+                <v-card-title class="overline">Successfully registered</v-card-title>
 
                 <v-card-text>
-                    <v-banner>You have successfully registered the credential through Attestation operation.</v-banner>
+                    <v-alert 
+                        type="info" 
+                        colored-border 
+                        icon="mdi-alert-circle-check"
+                    >
+                        The server has validated the credential registration through Attestation operation.
+                        
+                        <hr class="ma-3">
+                        
+                        All information is shown in this page. Close this dialog to navigate through it.
+                        
+                        <hr class="ma-3">
+                        
+                        You can now <b>authenticate</b> with it at <router-link to="/assertion">assertion operation</router-link>.
+                        
+                        <hr class="ma-3">
+                        
+                        Registered credentials are shown in the <router-link to="/dashboard">dashboard</router-link>.
+                    </v-alert>
                     
                     <v-alert 
                         v-for="warning in this.validation.warnings" :key="warning"
@@ -164,7 +235,7 @@
                     <v-spacer></v-spacer>
 
                     <v-btn
-                        color="green darken-1"
+                        color="primary darken-1"
                         text
                         @click="showSuccess = false"
                     >

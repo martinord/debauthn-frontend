@@ -1,7 +1,28 @@
 <template>
     <v-content>
-        <v-banner>Assertion operation uses an authenticator to log into the system</v-banner>
-        <!--TODO: include input for user-->
+        <v-alert
+            class="mb-5"
+            type="info"
+            icon="mdi-login"
+            colored-border
+            border="bottom"
+            prominent
+            color="primary"
+        >
+            <div class="overline mb-3">Assertion ceremony</div>
+            
+            This section allows to <b>authenticate a credential through Assertion operation</b>.
+            
+            <v-divider class="mb-2 mt-2"></v-divider>
+            
+            In order to authenticate (log in) with a credential, it should be already registered in the system.
+            
+            <v-divider class="mb-2 mt-2"></v-divider>
+            
+            <b>The authenticator will sign a challenge from the server with the private key of a registered credential.</b>
+            
+            <v-divider class="mb-2 mt-2"></v-divider>
+        </v-alert>
 
         <!-- dinamic alert on error -->
 
@@ -25,11 +46,20 @@
                 :rules="[() => !errorOnStep[0]]" 
                 step="1"
             >
-                Assertion options
-                <small>Request and edit Assertion options</small>
+                Authentication options
+                <small>Assertion options</small>
             </v-stepper-step>
             <v-stepper-content step="1">
                 
+                <v-banner 
+                    class="mb-5 elevation-3"
+                >
+                    <b>The following form shows the Assertion options fetched from the server.</b>
+                    <hr class="ma-2">
+                    Here you can modify the options before they are sent to the authenticator.
+                    Also, you can fetch new options from the server with the reload button at the bottom. 
+                </v-banner>
+
                 <assertion-options class="mb-5" 
                     :options="options"
                     @updated="options=$event"
@@ -69,6 +99,16 @@
                 <small>Request authenticator through WebAuthn API</small>
             </v-stepper-step>
             <v-stepper-content step="2">
+
+                <v-banner 
+                    class="mb-5 elevation-3"
+                >
+                    <b>The authenticator has been requested</b>
+                    <hr class="ma-2">
+                    Once the authenticator responds with the information it will be shown in this section.
+                    You can navigate through the encoded infromation by clicking on the fields.  
+                </v-banner>
+
                 <v-card
                     class="mb-12"
                     color="grey lighten-3"
@@ -111,6 +151,17 @@
                 <small>Send result and request its validation</small>
             </v-stepper-step>
             <v-stepper-content step="3">
+
+                <v-banner 
+                    class="mb-5 elevation-3"
+                >
+                    <b>The result has been posted to the server, parsed and validated</b>
+                    <hr class="ma-2">
+                    You can navigate through the infromation by clicking on the fields.
+                    Here you will find information about your authenticator as well as
+                    the decoded data exchanged during the operation. 
+                </v-banner>
+
                 <v-card
                     class="mb-12"
                     color="grey lighten-3"
@@ -146,10 +197,24 @@
             max-width="700"
         >
             <v-card>
-                <v-card-title class="headline">Successful</v-card-title>
+                <v-card-title class="overline">Successfully authenticated</v-card-title>
 
                 <v-card-text>
-                    <v-banner>You have successfully authenticated the credential through Assertion operation.</v-banner>
+                    <v-alert 
+                        type="info" 
+                        colored-border 
+                        icon="mdi-alert-circle-check"
+                    >
+                        <b>The server has validated the signature so you have successfully logged in through Assertion operation.</b>
+                        
+                        <hr class="ma-3">
+                        
+                        All information is shown in this page. Close this dialog to navigate through it.
+                        
+                        <hr class="ma-3">
+                        
+                        You can also check the credential <b>counter</b> in the registered credentials in the <router-link to="/">dashboard</router-link>.
+                    </v-alert>
                     
                     <v-alert 
                         v-for="warning in this.validation.warnings" :key="warning"
@@ -164,7 +229,7 @@
                     <v-spacer></v-spacer>
 
                     <v-btn
-                        color="green darken-1"
+                        color="primary darken-1"
                         text
                         @click="showSuccess = false"
                     >
