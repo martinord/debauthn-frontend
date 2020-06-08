@@ -83,15 +83,59 @@
             </v-row>
             <v-row>
                 <v-col>
-                    <!-- disabled temporaly: array -->
-                    <v-text-field
-                        v-model="form.pubKeyCredParams"
-                        label="Public Key Credential Parameters"
-                        :rules="rules.required.concat(rules.pubKeyCredParams)"
-                        outlined
-                        rounded
-                        disabled
-                    ></v-text-field>
+                   <label>PubKeyCredParams</label>
+                   <v-row>
+                        <v-col class="col-12 col-sm-6 col-md-4">
+                            <v-card :disabled="!editable" outlined>
+                                <v-form>
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <div class="overline mb-4">{{"public-key"}}</div>
+                                            <v-text-field
+                                                v-model="newParam"
+                                                label="COSE Algorithm Identifier"
+                                                :disabled="!editable"
+                                                hint="check IANA COSE algorithm codes"
+                                            ></v-text-field>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                    <v-card-actions>
+                                        <v-btn 
+                                            @click="addParam"
+                                            fab x-small
+                                            color="primary"
+                                            class="ml-2 mb-2"
+                                            :disabled="!editable || newParam == ''"
+                                        >
+                                            <v-icon> mdi-toy-brick-plus </v-icon>
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-form>
+                            </v-card>
+                        </v-col>
+                        <v-col 
+                            class="col-12 col-sm-6 col-md-4"
+                            v-for="param in form.pubKeyCredParams" :key="param.alg"
+                        >
+                            <v-card :disabled="!editable" hover>
+                                <v-list-item>
+                                    <v-list-item-content>
+                                        <div class="overline mb-4">{{param.type}}</div>
+                                        <div>{{param.alg}}</div>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-card-actions>
+                                    <v-icon 
+                                        @click="deleteParam(param.alg)"
+                                        class="ma-2"
+                                        :disabled="!editable"
+                                    >
+                                        mdi-toy-brick-remove
+                                    </v-icon>
+                                </v-card-actions>
+                            </v-card>
+                        </v-col>
+                    </v-row>
                 </v-col>
             </v-row>
 
@@ -221,6 +265,7 @@ export default {
                 challenge: "",
                 pubKeyCredParams: [],
             },
+            newParam:"",
             valid: false, //stores validation of the form
             editable: false,
             rules: {
@@ -269,6 +314,21 @@ export default {
                     userVerification: ""
                 }
             }
+        },
+        addParam() {
+            if(this.newParam === "") return
+            if(this.form.pubKeyCredParams == undefined)
+                this.form.pubKeyCredParams = []
+            this.form.pubKeyCredParams.push({
+                type:"public-key",
+                alg: this.newParam
+            })
+            this.newParam = ""
+        },
+        deleteParam(alg){
+            this.form.pubKeyCredParams = 
+                this.form.pubKeyCredParams.filter(item => item.alg !== alg)
+
         }
     },
     watch: {
