@@ -51,6 +51,40 @@
             <v-icon medium>mdi-alert-circle</v-icon>This site is part of an investigation on WebAuthn. The tool is currently under development.
             However, feel free to try it. Any comments are welcome: martino.rivera.dourado at udc dot es
           </p>
+          <v-progress-circular
+            class="ma-5"
+            v-if="compatible===undefined"
+            indeterminate
+            color="white"
+          >
+            Testing browser...
+          </v-progress-circular>
+          <v-alert class="mt-2 mb-2"
+            v-else-if="!compatible"
+            border="right"
+            colored-border
+            elevation="2"
+            prominent
+            transition="scale-transition" 
+            type="error"
+        >
+            <b>Oh no! Your browser does not support WebAuthn.</b> 
+            <v-divider class="mt-2 mb-2"></v-divider>
+            You can try with Firefox (v.60 or later) or Chrome/Chromium (v.70 or later).
+            <v-divider class="mt-2 mb-2"></v-divider>
+            Your browser name is {{ ua }}
+        </v-alert>
+        <v-alert class="mt-2 mb-2"
+            v-else
+            border="right"
+            colored-border
+            elevation="2"
+            prominent 
+            transition="scale-transition" 
+            type="info"
+        >
+            Your browser supports WebAuthn! You can use the tool!
+        </v-alert>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -67,9 +101,20 @@ export default {
   components: {},
   data() {
     return {
-      showNotification: true
+      showNotification: true,
+      compatible: undefined,
+      ua: ""
     };
-  }
+  },
+  methods: {
+    featureDetection(){
+      return !!(navigator.credentials && navigator.credentials.create && navigator.credentials.get && window.PublicKeyCredential);
+    }
+  },
+  mounted() {
+    this.ua = navigator.userAgent
+    this.compatible = this.featureDetection()
+  },
 };
 </script>
 
