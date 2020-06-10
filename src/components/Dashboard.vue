@@ -13,10 +13,13 @@
             DebAuthn serves as a debugger for <b><a href="https://www.w3.org/TR/webauthn/" target="_blank"> WebAuthn</a>, a new
             standard for authenticating identities on the web</b>.
             <v-divider class="mb-2 mt-2"></v-divider>
-            In brief, an user can be registered and, afterwards, logged in. <b>In WebAuthn, this means, respectively, registering and authenticating a credential with an authenticator</b>.
+            In brief, you can be registered and, afterwards, logged in. <b>In WebAuthn, this means, respectively, registering and authenticating a credential with an authenticator</b>.
             <v-divider class="mb-2 mt-2"></v-divider>
-            DebAuthn mimics the functioning of a real WebAuthn Relying Party by using <b>session information</b> stored at the server during 60 minutes. Also notice that the registered credentials
-            are tight to the cookie id, meaning that a registered credential in one device will not be available in a different device unless you manually copy the session id. 
+            DebAuthn mimics the functioning of the  WebAuthn protocol by using <b>session information</b>, storing the minimal necessary information at the Relying Party server
+            during 60 minutes. This allows testers to perform independent tests and <b>work with credentials</b> instead of users.  
+            <v-divider class="mb-2 mt-2"></v-divider>
+            As there are no users in the system, notice that the registered credentials are tight to the session id. That means that a registered credential in one device will not be available in a different device.
+            Thus, <b>the credentials are not linked to an user account, making them independent and not roaming credentials</b>. 
             <v-divider class="mb-2 mt-2"></v-divider>
             In order to better understand registering and authenticating operations, both of them are divided in three steps:
             <ol class="ma-2">

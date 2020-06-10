@@ -12,7 +12,7 @@
         >
             <div class="overline mb-3">Attestation ceremony</div>
 
-            This section allows to <b>register a credential through Attestation operation</b>.
+            This section allows to <b> create and register a credential through Attestation operation</b>.
             The operation requires an authenticator compatible with <a href="https://www.w3.org/TR/webauthn/#sctn-authenticator-model" target="_blank"> WebAuthn Authenticator Model</a>.
             
             <v-divider class="mb-2 mt-2"></v-divider>

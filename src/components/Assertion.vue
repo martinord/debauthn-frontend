@@ -11,7 +11,7 @@
         >
             <div class="overline mb-3">Assertion ceremony</div>
             
-            This section allows to <b>authenticate a credential through Assertion operation</b>.
+            This section allows to <b>authenticate with a credential through Assertion operation</b>.
             
             <v-divider class="mb-2 mt-2"></v-divider>
             
