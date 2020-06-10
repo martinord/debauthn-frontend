@@ -36,6 +36,7 @@
     <div class="footer">
       <hr />
       <v-footer>
+        <div class="font-thin overline">Developed by <a href="https://github.com/martinord" target="_blank">martinord</a></div>
         <v-spacer></v-spacer>
         <div class="font-thin overline">DebAuthn - WebAuthn Authenticator Debugging Tool</div>
       </v-footer>
