@@ -142,7 +142,7 @@
             <!-- optional -->
 
             <v-row>
-                <v-col class="col-12 col-md-4">
+                <v-col class="col-12 col-sm-6">
                     <v-text-field
                         v-model="form.timeout"
                         label="Timeout"
@@ -153,7 +153,7 @@
                         hint="optional"
                     ></v-text-field>
                 </v-col>
-                <v-col class="col-12 col-md-4">
+                <v-col class="col-12 col-sm-6">
                     <v-select
                         v-model="form.attestation"
                         label="Attestation Conveyance"
@@ -165,16 +165,61 @@
                         hint="optional"
                     ></v-select>
                 </v-col>
-                <v-col class="col-12 col-md-4">
-                    <v-text-field
-                        v-model="form.excludeCredentials"
-                        label="Exclude Credentials"
-                        :rules="rules.excludeCredentials"
-                        disabled
-                        outlined
-                        rounded
-                        hint="optional"
-                    ></v-text-field>
+            </v-row>
+            <v-row>
+                <v-col>
+                    <label>Exclude Credentials</label>
+                    <v-row>
+                        <v-col>
+                            <v-card :disabled="!editable" outlined>
+                                <v-form>
+                                    <v-list-item>
+                                        <v-list-item-content>
+                                            <div class="overline mb-4">{{"public-key"}}</div>
+                                            <v-text-field
+                                                v-model="newCredentialId"
+                                                label="Credential id"
+                                                :disabled="!editable"
+                                                hint="base64"
+                                            ></v-text-field>
+                                        </v-list-item-content>
+                                    </v-list-item>
+                                    <v-card-actions>
+                                        <v-btn 
+                                            @click="addCredential"
+                                            fab x-small
+                                            color="primary"
+                                            class="ml-2 mb-2"
+                                            :disabled="!editable || newCredentialId == ''"
+                                        >
+                                            <v-icon> mdi-key-plus </v-icon>
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-form>
+                            </v-card>
+                        </v-col>
+                    </v-row>
+                    <v-row v-for="credential in form.excludeCredentials" :key="credential.id">
+                        <v-col>
+                            <v-card :disabled="!editable" hover>
+                                <v-list-item>
+                                    <v-list-item-content>
+                                        <div class="overline mb-4">{{credential.type}}</div>
+                                        <div>{{credential.id}}</div>
+                                    </v-list-item-content>
+                                </v-list-item>
+                                <v-card-actions>
+                                    <v-icon 
+                                        @click="deleteCredential(credential.id)"
+                                        class="ma-2"
+                                        :disabled="!editable"
+                                    >
+                                        mdi-key-remove
+                                    </v-icon>
+                                </v-card-actions>
+                            </v-card>
+                        </v-col>
+                    </v-row>
                 </v-col>
             </v-row>
             <label>Authenticator Selection</label>
@@ -266,6 +311,7 @@ export default {
                 pubKeyCredParams: [],
             },
             newParam:"",
+            newCredentialId:"",
             valid: false, //stores validation of the form
             editable: false,
             rules: {
@@ -328,6 +374,21 @@ export default {
         deleteParam(alg){
             this.form.pubKeyCredParams = 
                 this.form.pubKeyCredParams.filter(item => item.alg !== alg)
+
+        },
+        addCredential() {
+            if(this.newCredentialId === "") return
+            if(this.form.excludeCredentials == undefined)
+                this.form.excludeCredentials = []
+            this.form.excludeCredentials.push({
+                type:"public-key",
+                id: this.newCredentialId
+            })
+            this.newCredentialId = ""
+        },
+        deleteCredential(id){
+            this.form.excludeCredentials = 
+                this.form.excludeCredentials.filter(item => item.id !== id)
 
         }
     },
