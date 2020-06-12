@@ -84,6 +84,22 @@
                 </v-card>
             </v-col>
         </v-row>
+        <v-row v-if="registeredCredentials.length > 0">
+            <v-btn color="error accent-1" class="ma-2" @click="showConfirm = true">Delete all</v-btn>
+            <v-dialog v-model="showConfirm" max-width="700">
+                <v-alert type="warning" prominent colored-border border="left">
+                    <b class="headline">Delete all registered credentials?</b>
+                    <p>
+                        Are you sure you want to delete all registered credentials from the server?
+                        <b>It cannot be undone!</b>
+                    </p>
+                    <div>
+                        <v-btn class="mr-2" outlined @click="showConfirm = false">Cancel</v-btn>
+                        <v-btn color="warning" @click="deleteRegisteredCredentials()">Yes</v-btn>
+                    </div>
+                </v-alert>
+            </v-dialog>
+        </v-row>
     </div>
 </template>
 
@@ -95,7 +111,8 @@ export default {
     data() {
         return {
             error: {happened: false, error: "An error occurred"},
-            registeredCredentials: []
+            registeredCredentials: [],
+            showConfirm: false
         }
     },
     methods: {
@@ -105,6 +122,19 @@ export default {
             .then((res) => {
                 this.registeredCredentials = res.data
             })
+            .catch((error) => {
+                this.error.happened = true
+                this.error.msg = error
+            })
+        },
+        deleteRegisteredCredentials(){
+            this.showConfirm = false
+
+            let url = "/registered"
+            axios.delete(url)
+            .then(
+                this.registeredCredentials = []
+            )
             .catch((error) => {
                 this.error.happened = true
                 this.error.msg = error
