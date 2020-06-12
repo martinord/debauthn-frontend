@@ -238,8 +238,8 @@
                 </v-col>
                 <v-col>
                     <v-checkbox
-                        v-model="form.authenticatorSelection.requiresResidentKey"
-                        label="Requires Resident Key"
+                        v-model="form.authenticatorSelection.requireResidentKey"
+                        label="Require Resident Key"
                         :disabled="!editable"
                         required
                         hint="optional"
@@ -356,7 +356,7 @@ export default {
             if(!Object.prototype.hasOwnProperty.call(this.form, "authenticatorSelection")){
                 this.form.authenticatorSelection = {
                     authenticatorAttachment: "",
-                    requiresResidentKey: false,
+                    requireResidentKey: false,
                     userVerification: ""
                 }
             }
