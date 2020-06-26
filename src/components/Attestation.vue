@@ -292,7 +292,7 @@ export default {
 
             // request options for sending to authenticator
             let url = "/attestation/options"
-            axios.post(url, JSON.stringify({  }))
+            axios.get(url)
             .then((res) => {
                 this.options = res.data;
                 this.options.user.name = "john.p.smith@example.com";

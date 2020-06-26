@@ -286,7 +286,7 @@ export default {
 
             // request options for sending to authenticator
             let url = "/assertion/options"
-            axios.post(url, JSON.stringify({  }))
+            axios.get(url)
             .then((res) => {
                 this.options = res.data;
                 this.loading = false
