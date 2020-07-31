@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Dashboard from './components/Dashboard'
-import Attestation from './components/Attestation'
-import Assertion from './components/Assertion'
+const Dashboard = () => import('./components/Dashboard')
+const Attestation = () => import('./components/Attestation')
+const Assertion = () => import('./components/Assertion')
 
 Vue.use(VueRouter)
 
