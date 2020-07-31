@@ -46,11 +46,10 @@
 
     <v-dialog v-model="showNotification" max-width="700">
       <v-card dark>
-        <v-card-title>Disclaimer</v-card-title>
+        <v-card-title>Welcome!</v-card-title>
         <v-card-text>
-          <p>
-            <v-icon medium>mdi-alert-circle</v-icon>This site is part of an investigation on WebAuthn. The tool is currently under development.
-            However, feel free to try it. Any comments are welcome: martino.rivera.dourado at udc dot es
+          <p class="subtitle-1">
+            Here is a quick compatibility check 
           </p>
           <v-progress-circular
             class="ma-5"
@@ -89,7 +88,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="showNotification = false">Dismiss</v-btn>
+          <v-btn text @click="showNotification = false">Alright</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
