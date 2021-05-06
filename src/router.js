@@ -7,10 +7,11 @@ const Assertion = () => import('./components/Assertion')
 Vue.use(VueRouter)
 
 export default new VueRouter({
+    mode: 'history',
     routes: [
       { path: "/", component: Dashboard },
-      { path: "/attestation", component: Attestation },
-      { path: "/assertion", component: Assertion },
+      { path: "/register", component: Attestation },
+      { path: "/authenticate", component: Assertion },
       { path: '*', redirect: '/'}
     ]
 })
