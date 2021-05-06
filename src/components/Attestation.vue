@@ -1,6 +1,5 @@
 <template>
-    <v-content>
-        
+    <v-col>
         <v-alert
             class="mb-5"
             type="info"
@@ -244,7 +243,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </v-content>
+    </v-col>
 </template>
 
 <script>
@@ -338,8 +337,10 @@ export default {
             axios.post(url, data)
             .then((res) => {
                 this.validation = res.data
-                if(this.validation.complete)
+                if(this.validation.complete){
                     this.showSuccess = true
+                    this.$emit('newCredential')
+                }
                 this.loading = false
                 this.errorOnStep[2] = false
             })
@@ -365,6 +366,7 @@ export default {
     mounted() {
         // launch on mounted element
         this.start()
+        this.$emit('newCredential')
     },
 }
 </script>

@@ -1,119 +1,87 @@
 <template>
-  <v-app>
-    <v-container>
+  <v-app id="inspire">
       <!-- header -->
+      <v-app-bar
+        app
+        color="white"
+        flat
+      >
+        <!-- TODO: profile -->
 
-      <v-row class="header mb-4 mt-4 pa-5 pb-6 primary lighten-3 elevation-5">
-        <v-col>
-          <v-row @click="$router.push({path:'/'})" justify="center" align="center">
-            <img src="./assets/header.png" class="logo" />
-          </v-row>
-          <!-- <v-row class="pa-5 subtitle-1 font-thin">WebAuthn Authenticator Debugging Tool</v-row> -->
-        </v-col>
-      </v-row>
+        <v-container class="py-0 fill-height">
+          <v-avatar
+            @click="$router.push({path:'/'})"
+            class="mr-10"
+            color="primary"
+            size="35"
+          >
+            <img
+              src="favicon.ico"
+            >
+          </v-avatar>
 
-      <!-- tabs routing -->
+          <v-btn text to="/">Dashboard</v-btn>
+          <v-btn text to="/register">Register</v-btn>
+          <v-btn text to="/authenticate">Authenticate</v-btn>
 
-      <v-row justify="center" class="elevation-3">
-        <v-tabs background-color="primary" dark show-arrows>
-          <v-tab to="/">Dashboard</v-tab>
-          <v-tab to="/attestation">Register</v-tab>
-          <v-tab to="/assertion">Authenticate</v-tab>
-        </v-tabs>
-      </v-row>
+          <v-spacer></v-spacer>
 
-      <!-- dynamic router view -->
+          <img
+            height="40"
+            src="./assets/header.png"
+          >
+        </v-container>
 
-      <v-row class="mb-2 mt-2">
-        <v-col>
-          <router-view></router-view>
-        </v-col>
-      </v-row>
-    </v-container>
+      </v-app-bar>
+
+
+     <v-main class="primary lighten-4">
+      <v-container>
+        <v-row>
+          <v-col cols="3">
+            <v-sheet rounded="lg">
+              <registered-credentials ref="registeredCredentials" :new-credential="newcredential"></registered-credentials>
+            </v-sheet>
+          </v-col>
+
+          <v-col cols="9">
+            <v-sheet
+              min-height="70vh"
+              rounded="lg"
+            >
+              <router-view @newCredential="newCredentialHandler"></router-view>
+            </v-sheet>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
 
     <!-- footer -->
 
-    <div class="footer">
-      <hr />
-      <v-footer>
-        <div class="font-thin overline">Developed by <a href="https://github.com/martinord" target="_blank">martinord</a></div>
-        <v-spacer></v-spacer>
-        <div class="font-thin overline">DebAuthn - WebAuthn Authenticator Debugging Tool</div>
-      </v-footer>
-    </div>
-
-    <!-- notification dialog -->
-
-    <v-dialog v-model="showNotification" max-width="700">
-      <v-card dark>
-        <v-card-title>Welcome!</v-card-title>
-        <v-card-text>
-          <p class="subtitle-1">
-            Here is a quick compatibility check 
-          </p>
-          <v-progress-circular
-            class="ma-5"
-            v-if="compatible===undefined"
-            indeterminate
-            color="white"
-          >
-            Testing browser...
-          </v-progress-circular>
-          <v-alert class="mt-2 mb-2"
-            v-else-if="!compatible"
-            border="right"
-            colored-border
-            elevation="2"
-            prominent
-            transition="scale-transition" 
-            type="error"
-        >
-            <b>Oh no! Your browser does not support WebAuthn.</b> 
-            <v-divider class="mt-2 mb-2"></v-divider>
-            You can try with Firefox (v.60 or later) or Chrome/Chromium (v.70 or later).
-            <v-divider class="mt-2 mb-2"></v-divider>
-            Your browser name is {{ ua }}
-        </v-alert>
-        <v-alert class="mt-2 mb-2"
-            v-else
-            border="right"
-            colored-border
-            elevation="2"
-            prominent 
-            transition="scale-transition" 
-            type="info"
-        >
-            Your browser supports WebAuthn! You can use the tool!
-        </v-alert>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text @click="showNotification = false">Alright</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <v-footer absolute>
+      <div class="font-thin overline">Developed by <a href="https://github.com/martinord" target="_blank">martinord</a></div>
+      <v-spacer></v-spacer>
+      <div class="font-thin overline">DebAuthn - WebAuthn Authenticator Debugging Tool</div>
+    </v-footer>
+    
   </v-app>
 </template>
 
 <script>
+import RegisteredCredentials from './components/RegisteredCredentials';
+
 export default {
   name: "App",
-  components: {},
-  data() {
-    return {
-      showNotification: true,
-      compatible: undefined,
-      ua: ""
-    };
+  components: {
+    'registered-credentials': RegisteredCredentials
   },
+  data: () => ({
+    newcredential: false
+  }),
   methods: {
-    featureDetection(){
-      return !!(navigator.credentials && navigator.credentials.create && navigator.credentials.get && window.PublicKeyCredential);
+    newCredentialHandler() {
+      this.$refs.registeredCredentials.fetchRegisteredCredentials()
     }
-  },
-  mounted() {
-    this.ua = navigator.userAgent
-    this.compatible = this.featureDetection()
   },
 };
 </script>

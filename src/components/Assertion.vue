@@ -1,5 +1,5 @@
 <template>
-    <v-content>
+    <v-col>
         <v-alert
             class="mb-5"
             type="info"
@@ -238,7 +238,7 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </v-content>
+    </v-col>
 </template>
 
 <script>
