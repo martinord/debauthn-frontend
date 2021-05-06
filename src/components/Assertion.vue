@@ -330,8 +330,10 @@ export default {
             axios.post(url, data)
             .then((res) => {
                 this.validation = res.data
-                if(this.validation.complete)
+                if(this.validation.complete) {
                     this.showSuccess = true
+                    this.$emit('updatedCredential')
+                }
                 this.loading = false
                 this.errorOnStep[2] = false
             })

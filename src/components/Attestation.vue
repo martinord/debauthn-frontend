@@ -339,7 +339,7 @@ export default {
                 this.validation = res.data
                 if(this.validation.complete){
                     this.showSuccess = true
-                    this.$emit('newCredential')
+                    this.$emit('updatedCredential')
                 }
                 this.loading = false
                 this.errorOnStep[2] = false
@@ -366,7 +366,6 @@ export default {
     mounted() {
         // launch on mounted element
         this.start()
-        this.$emit('newCredential')
     },
 }
 </script>

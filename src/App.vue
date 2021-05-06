@@ -40,7 +40,7 @@
         <v-row>
           <v-col cols="3">
             <v-sheet rounded="lg">
-              <registered-credentials ref="registeredCredentials" :new-credential="newcredential"></registered-credentials>
+              <registered-credentials ref="registeredCredentials"></registered-credentials>
             </v-sheet>
           </v-col>
 
@@ -49,7 +49,7 @@
               min-height="70vh"
               rounded="lg"
             >
-              <router-view @newCredential="newCredentialHandler"></router-view>
+              <router-view @updatedCredential="updatedCredentialHandler"></router-view>
             </v-sheet>
           </v-col>
         </v-row>
@@ -75,11 +75,8 @@ export default {
   components: {
     'registered-credentials': RegisteredCredentials
   },
-  data: () => ({
-    newcredential: false
-  }),
   methods: {
-    newCredentialHandler() {
+    updatedCredentialHandler() {
       this.$refs.registeredCredentials.fetchRegisteredCredentials()
     }
   },
