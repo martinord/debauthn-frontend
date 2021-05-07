@@ -7,7 +7,6 @@
             <v-card-text>
                 <v-alert
                 class="mb-5 mt-5 pl-8"
-                type=""
                 colored-border
                 border="left"
                 color="primary"
