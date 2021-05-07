@@ -1,7 +1,13 @@
 <template>
     <v-col>
-        <div class="overline mb-6">Registered credentials</div>
-        <v-row>
+        <v-row 
+            class="overline mb-6 ml-1 mr-1 mt-1"
+            align="center"
+            justify="center"
+        >
+            Registered credentials
+        </v-row>
+        <v-row class="mb-3">
             <v-expansion-panels focusable>
                 <v-expansion-panel v-for="(credential, index) in registeredCredentials" :key="credential.id">
                     <v-expansion-panel-header>
