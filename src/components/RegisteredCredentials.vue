@@ -9,22 +9,22 @@
         </v-row>
         <v-row class="mb-3">
             <v-expansion-panels focusable>
-                <v-expansion-panel v-for="(credential, index) in registeredCredentials" :key="credential.id">
+                <v-expansion-panel v-for="(device, index) in registeredCredentials" :key="device.credentialID">
                     <v-expansion-panel-header>
                         Public key Credential {{index}}
                     </v-expansion-panel-header>
                     <v-expansion-panel-content class="mb-2 mt-2">
-                        <div class="font-weight-thin mb-1">counter: {{credential.counter}}</div>
+                        <div class="font-weight-thin mb-1">counter: {{device.counter}}</div>
                         <v-card class="mb-2 mt-2">
                             <v-card-title class="overline">  Identifier </v-card-title>
                             <v-card-text>
-                                {{credential.rawId}}
+                                {{device.credentialID}}
                             </v-card-text>
                         </v-card>
                         <v-card class="mb-2 mt-2">
                             <v-card-title class="overline">  public key </v-card-title>
                             <v-card-text>
-                                {{credential.publicKey}}
+                                {{device.credentialPublicKey}}
                             </v-card-text>
                         </v-card>
                     </v-expansion-panel-content>

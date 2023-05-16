@@ -236,14 +236,17 @@
                         hint="optional"
                     ></v-select>
                 </v-col>
-                <v-col>
-                    <v-checkbox
-                        v-model="form.authenticatorSelection.requireResidentKey"
-                        label="Require Resident Key"
+                <v-col class="col-12 col-md-4">
+                    <v-select
+                        v-model="form.authenticatorSelection.residentKey"
+                        label="Resident key"
+                        :items="rules.residentKey"
                         :disabled="!editable"
-                        required
+                        clearable
+                        outlined
+                        rounded
                         hint="optional"
-                    ></v-checkbox>
+                    ></v-select>
                 </v-col>
                 <v-col class="col-12 col-md-4">
                     <v-select
@@ -256,6 +259,15 @@
                         rounded
                         hint="optional"
                     ></v-select>
+                </v-col>
+                <v-col>
+                    <v-checkbox
+                        v-model="form.authenticatorSelection.requireResidentKey"
+                        label="Require Resident Key"
+                        :disabled="!editable"
+                        required
+                        hint="optional"
+                    ></v-checkbox>
                 </v-col>
             </v-row>
             
@@ -329,7 +341,8 @@ export default {
                 attestation: ['none', 'indirect', 'direct'],
                 excludeCredentials: [],
                 authenticatorAttachment: ['platform', 'cross-platform'],
-                userVerification: ['preferred', 'required', 'discouraged']
+                userVerification: ['preferred', 'required', 'discouraged'],
+                residentKey: ['preferred', 'required', 'discouraged']
             }
         }
     },
@@ -357,6 +370,7 @@ export default {
                 this.form.authenticatorSelection = {
                     authenticatorAttachment: "",
                     requireResidentKey: false,
+                    residentKey: "discouraged",
                     userVerification: ""
                 }
             }
