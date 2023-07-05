@@ -114,7 +114,7 @@
                     color="grey lighten-3"
                 >
                     <object-tree
-                        :object="encoded_response">
+                        :object="response">
                     </object-tree>
                 </v-card>
                 <v-container 
@@ -167,7 +167,7 @@
                     color="grey lighten-3"
                 > 
                     <object-tree
-                        :object="validation.data"
+                        :object="validation.authenticationInfo"
                     ></object-tree>
                 </v-card>
                 <v-container 
@@ -244,10 +244,10 @@
 <script>
 import axios from 'axios';
 axios.defaults.headers.common['Content-Type'] = "application/json;charset=UTF-8";
-import { PublicKeyCredentialRequestOptions, AuthenticatorAssertionResponse } 
-    from '../models/assertion.model'
 import AssertionOptions from './forms/AssertionOptions'
 import ObjectTree from './ObjectTree';
+import * as SimpleWebAuthnBrowser from '../assets/js/index.umd.min.js'
+
 
 export default {
     name: "Assertion",
@@ -265,7 +265,6 @@ export default {
       options:{},
       response: {},
       validation: {},
-      encoded_response: {}
     }),
     methods: {
         removeDialogs() {
@@ -301,15 +300,11 @@ export default {
             this.removeDialogs();
             this.current_step = 2;
             this.response = {}
-            this.encoded_response = {}
             this.loading = true
 
-            navigator.credentials.get({
-                publicKey: PublicKeyCredentialRequestOptions.decode(this.options) 
-            })
+            SimpleWebAuthnBrowser.startAuthentication(this.options)
             .then((response) => {
                 this.response = response
-                this.encoded_response = AuthenticatorAssertionResponse.encode(this.response)
                 this.loading = false
                 this.errorOnStep[1] = false
             })
@@ -326,11 +321,11 @@ export default {
 
             // send authenticator response and wait for verification
             let url = "/assertion/result"
-            var data = this.encoded_response
+            var data = this.response
             axios.post(url, data)
             .then((res) => {
                 this.validation = res.data
-                if(this.validation.complete) {
+                if(this.validation.verified) {
                     this.showSuccess = true
                     this.$emit('updatedCredential')
                 }
@@ -340,7 +335,7 @@ export default {
             .catch((error) => {
                 this.errorOnStep[2] = true
                 this.onError(error)
-            })           
+            })
         },
         all() {
             this.request();

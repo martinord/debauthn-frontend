@@ -23,7 +23,7 @@ export class PublicKeyCredentialRequestOptions {
             o.allowCredentials.forEach(function(credential){
                 obj.allowCredentials.push({
                     type: "public-key",
-                    id: buff.decode(credential.id) 
+                    id: buff.decode(credential.credentialID) 
                 })
             })
         }
