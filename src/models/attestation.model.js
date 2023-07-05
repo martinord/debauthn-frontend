@@ -28,7 +28,7 @@ export class PublicKeyCredentialCreationOptions {
             o.excludeCredentials.forEach(function(credential){
                 obj.excludeCredentials.push({
                     type: "public-key",
-                    id: buff.decode(credential.id) 
+                    id: buff.decode(credential.credentialID) 
                 })
             })
         }
