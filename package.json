@@ -31,7 +31,8 @@
   "eslintConfig": {
     "root": true,
     "env": {
-      "node": true
+      "node": true,
+      "amd": true
     },
     "extends": [
       "plugin:vue/essential",
