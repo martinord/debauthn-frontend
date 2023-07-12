@@ -115,6 +115,38 @@
                 </v-col>
             </v-row>
 
+            <label>WebAuthn Extensions</label>
+            <v-row>
+                <v-col class="col-12 col-sm-6">
+                    <v-text-field class="col"
+                        v-model="form.extensions.appid"
+                        label="AppID"
+                        :disabled="!editable"
+                        outlined
+                        rounded
+                        required
+                        hint="optional"
+                    ></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-checkbox
+                        v-model="form.extensions.credProps"
+                        label="Credential properties"
+                        :disabled="!editable"
+                        required
+                        hint="optional"
+                    ></v-checkbox>
+                </v-col>
+                <v-col>
+                    <v-checkbox
+                        v-model="form.extensions.hmacCreateSecret"
+                        label="Create HMAC secret"
+                        :disabled="!editable"
+                        required
+                        hint="optional"
+                    ></v-checkbox>
+                </v-col>
+            </v-row>
 
             <v-btn
                 v-if="!editable"
@@ -175,6 +207,8 @@ export default {
         onUpdate() {
             console.log('Options were modified')
             if(this.valid){
+                if(this.form.extensions.appid == "")
+                    delete this.form.extensions.appid
                 this.$emit('updated', this.form)
                 this.editable = false
             }
@@ -186,6 +220,14 @@ export default {
         loadOptions() {
              // load a deep copy of the object to the form to avoid data binding
             this.form = JSON.parse(JSON.stringify(this.options))
+
+            if(!Object.prototype.hasOwnProperty.call(this.form, "extensions")){
+                this.form.extensions = {
+                    appid: "",
+                    credProps: false,
+                    hmacCreateSecret: false
+                }
+            }
         },
         addCredential() {
             if(this.newCredentialId === "") return

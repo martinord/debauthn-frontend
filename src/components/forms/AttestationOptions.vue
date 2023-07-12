@@ -271,6 +271,38 @@
                 </v-col>
             </v-row>
             
+            <label>WebAuthn Extensions</label>
+            <v-row>
+                <v-col class="col-12 col-sm-6">
+                    <v-text-field class="col"
+                        v-model="form.extensions.appid"
+                        label="AppID"
+                        :disabled="!editable"
+                        outlined
+                        rounded
+                        required
+                        hint="optional"
+                    ></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-checkbox
+                        v-model="form.extensions.credProps"
+                        label="Credential properties"
+                        :disabled="!editable"
+                        required
+                        hint="optional"
+                    ></v-checkbox>
+                </v-col>
+                <v-col>
+                    <v-checkbox
+                        v-model="form.extensions.hmacCreateSecret"
+                        label="Create HMAC secret"
+                        :disabled="!editable"
+                        required
+                        hint="optional"
+                    ></v-checkbox>
+                </v-col>
+            </v-row>
 
              <v-btn
                 v-if="!editable"
@@ -354,6 +386,8 @@ export default {
                     delete this.form.authenticatorSelection.authenticatorAttachment
                 if(this.form.authenticatorSelection.userVerification == "")
                     delete this.form.authenticatorSelection.userVerification
+                if(this.form.extensions.appid == "")
+                    delete this.form.extensions.appid
                 this.$emit('updated', this.form)
                 this.editable = false
             }
@@ -372,6 +406,14 @@ export default {
                     requireResidentKey: false,
                     residentKey: "discouraged",
                     userVerification: ""
+                }
+            }
+
+            if(!Object.prototype.hasOwnProperty.call(this.form, "extensions")){
+                this.form.extensions = {
+                    appid: "",
+                    credProps: false,
+                    hmacCreateSecret: false
                 }
             }
         },
